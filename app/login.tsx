@@ -1,70 +1,122 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { Image, StyleSheet, ScrollView, View, Text, KeyboardAvoidingView, Alert } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import { SvgXml } from 'react-native-svg';
+import { Images } from '@/assets/images';
+import { Components } from '@/components';
+import { useState } from 'react';
+import { Router, useRouter } from 'expo-router';
+import Modal from "react-native-modal";
 
 export default function HomeScreen() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
+  const router: Router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const submit = () => {
+    if (email === "test") {
+      setModalVisible(true)
+    } else {
+      router.push('/(tabs)')
+    }
+  }
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <ScrollView keyboardShouldPersistTaps="always" style={{ flex: 1 }} showsVerticalScrollIndicator={false} >
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
+          source={require('@/assets/images/image.png')}
           style={styles.reactLogo}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome 4!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+        <View style={styles.topContainer} >
+          <SvgXml xml={Images.logo()} />
+
+          <View style={styles.inputContainer} >
+            <Components.Input value={email} setValue={setEmail} title='Email Address' placeholder='Enter email address here' />
+            <Components.Input value={password} setValue={setPassword} showPassword={showPassword} onIconPress={() => setShowPassword(!showPassword)} title='Password' placeholder='Enter password here' icon />
+          </View>
+
+          <View style={styles.buttonContainer} >
+            <Components.Button onPress={() => submit()} disabled={!email || !password} title='SUBMIT' />
+          </View>
+
+          <View style={styles.bottomContainer}>
+            <Text style={styles.bottomText1} >PTW Management Portal</Text>
+            <Text style={styles.bottomText2}>v1.1.0</Text>
+          </View>
+        </View>
+
+        <ModalComponent modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
   reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+    height: heightPercentageToDP(45),
+    width: widthPercentageToDP(100),
+    objectFit: 'cover',
+    borderBottomLeftRadius: widthPercentageToDP(15)
+  },
+  bottomContainer: { marginTop: heightPercentageToDP(5), flexDirection: 'column', gap: 2, alignItems: 'center' },
+  bottomText1: { color: "rgba(117, 117, 117, 1)", fontWeight: 'bold', fontSize: widthPercentageToDP(3) },
+  bottomText2: { color: "rgba(117, 117, 117, 1)", fontSize: widthPercentageToDP(3.5) },
+  topContainer: { flexDirection: 'column', gap: 10, marginTop: heightPercentageToDP(3), marginHorizontal: widthPercentageToDP(5), height: heightPercentageToDP(55), alignItems: 'center' },
+  inputContainer: { marginTop: heightPercentageToDP(3), width: "100%", gap: 20 },
+  buttonContainer: { marginTop: heightPercentageToDP(3), width: '100%' },
+});
+
+
+const ModalComponent = ({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: any }) => {
+  return (
+    <Modal
+      hasBackdrop={true}
+      onBackdropPress={() => setModalVisible(!modalVisible)}
+      animationIn="slideInUp"
+      isVisible={modalVisible}
+      style={{ padding: 0, margin: 0 }}
+    >
+      <View style={modalstyles.centeredView}>
+        <View style={{ alignItems: 'center', zIndex: 1 }} >
+          <SvgXml style={{ marginBottom: -40 }} xml={Images.error()} />
+        </View>
+        <View style={modalstyles.modalView} >
+          <View style={{ flexDirection: 'column', height: "70%", justifyContent: 'space-between', width: '100%' }} >
+
+            <Text style={{ color: "rgba(18, 18, 18, 1)", fontWeight: 'bold', fontSize: widthPercentageToDP(7), textAlign: 'center' }} >There seem to be an error trying to log you in</Text>
+            <Text style={{ color: "rgba(18, 18, 18, 1)", fontSize: widthPercentageToDP(4), textAlign: 'center' }}>Double check your credentials and login again or contact <Text style={{ fontWeight: 'bold' }} >admin@jupiterbuilder.com.sg</Text> for assistance.</Text>
+            <Components.Button title='GO BACK' onPress={() => setModalVisible(!modalVisible)} />
+          </View>
+        </View>
+      </View>
+    </Modal>
+  )
+}
+
+const modalstyles = StyleSheet.create({
+  modalView: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    shadowColor: '#000',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: heightPercentageToDP(40),
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    justifyContent: 'center',
+    paddingHorizontal: widthPercentageToDP(5)
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
 });
