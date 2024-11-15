@@ -21,7 +21,7 @@ const Profile = () => {
                 <View style={styles.topSubContainer} >
                     <AntDesign onPress={() => router.push({ 'pathname': '/(tabs)/' })} name="left" size={24} color="black" />
                     <Text style={styles.headerText}>View Profile</Text>
-                    <AntDesign style={{ opacity: 0 }} onPress={() => router.push({ 'pathname': '/(tabs)/' })} name="left" size={24} color="black" />
+                    <AntDesign style={{ opacity: 0 }} name="left" size={24} color="black" />
                 </View>
             </View>
 
@@ -30,7 +30,7 @@ const Profile = () => {
 
                     <View style={styles.flexContainer} >
                         <Text style={styles.headerText}>Account Details</Text>
-                        <MaterialCommunityIcons name="pencil" size={24} color="rgba(0, 0, 0, 0.56)" />
+                        <MaterialCommunityIcons onPress={() => router.push({ 'pathname': '/(tabs)/editProfile' })} name="pencil" size={24} color="rgba(0, 0, 0, 0.56)" />
                     </View>
 
                     <View style={[styles.flexContainer, { justifyContent: 'flex-start', marginTop: heightPercentageToDP(2) }]} >
