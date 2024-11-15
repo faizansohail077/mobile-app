@@ -1,13 +1,14 @@
 import { StyleSheet, View, Text, Platform, TouchableOpacity, FlatList, TextInput, Animated } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
-import { getData } from '@/lib/helpers';
+import { getData, removeData } from '@/lib/helpers';
 import { useEffect, useState } from 'react';
 import { SvgXml } from 'react-native-svg';
 import { Images } from '@/assets/images';
 import { tab_list } from '@/constants/user';
 import { Colors } from '@/constants/Colors';
 import { report_list } from '@/constants/reportData';
-import {Components} from '@/components';
+import { Components } from '@/components';
+import { Router, useRouter } from 'expo-router';
 
 
 const menuOptions = [
@@ -23,6 +24,7 @@ export default function HomeScreen() {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [reportData, setReportData] = useState<any>([])
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const router: Router = useRouter();
 
 
   useEffect(() => {
@@ -83,12 +85,18 @@ export default function HomeScreen() {
     </TouchableOpacity>
   );
 
-  const handleOptionSelect = (option: {
+  const handleOptionSelect = async (option: {
     text: string;
     goTo: string;
   }) => {
-    console.log(`Selected option: ${option.text}`);
-    setIsMenuVisible(false);
+    if (option.text === "Log Out") {
+      await removeData("user")
+      setIsMenuVisible(false);
+      router.replace({ pathname: "/login" })
+    } else {
+      setIsMenuVisible(false);
+    }
+
   };
 
 
@@ -148,7 +156,7 @@ export default function HomeScreen() {
             <SvgXml xml={Images.search()} />
             <TextInput placeholderTextColor={"rgba(102, 112, 133, 1)"} placeholder='Search by Report Number' style={{ width: '90%' }} />
           </View>
-          <TouchableOpacity onPress={()=>setFilterModalVisible(true)} activeOpacity={0.7} >
+          <TouchableOpacity onPress={() => setFilterModalVisible(true)} activeOpacity={0.7} >
             <SvgXml xml={Images.filter()} />
           </TouchableOpacity>
         </View>
