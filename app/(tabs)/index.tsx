@@ -94,6 +94,8 @@ export default function HomeScreen() {
       setIsMenuVisible(false);
       router.replace({ pathname: "/login" })
     } else {
+      router.push({ pathname: "/profile" })
+
       setIsMenuVisible(false);
     }
 
