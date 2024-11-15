@@ -10,14 +10,23 @@ export type Users = {
     color: string;
 }
 
+export const report_types = {
+    ["reports"]: "reports",
+    ["in-review"]: "In review",
+    ["approved"]: "approved",
+    ["rejected"]: "rejected",
+    ["completed"]: "completed",
+}
+
 export const tab_list = [
     {
         role: "Supervisor", tabs: [
-            { id: 0, text: "reports" },
-            { id: 1, text: "In review" },
-            { id: 2, text: "approved" },
-            { id: 3, text: "rejected" },
-            { id: 4, text: "completed" },
+            { id: 0, text: report_types["reports"] },
+            { id: 1, text: report_types["in-review"] },
+            { id: 2, text: report_types["approved"] },
+            { id: 3, text: report_types["rejected"] },
+            { id: 4, text: report_types["completed"] },
         ]
     }
 ]
+
