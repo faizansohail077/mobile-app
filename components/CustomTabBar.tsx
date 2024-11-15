@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useRouter, useSegments } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { SvgXml } from 'react-native-svg';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
+import CreateReportModalComponent from './CreateReportModal'; 
 
 type Route = {
-    name: any;
+    name: string;
     title: string;
     activeIcon: () => void;
     inactiveIcon: () => void;
@@ -15,13 +16,13 @@ type Route = {
 
 interface CustomTabBarProps {
     routes: Route[];
-
 }
 
 export function CustomTabBar({ routes }: CustomTabBarProps) {
     const router = useRouter();
     const segments: string[] = useSegments();
     const hideBottomTabBarRoutes = ['test'];
+    const [createReportModalVisible, setCreateReportModalVisible] = useState(false);
 
     const isRouteActive = (route: string) => {
         return route === '/' ? segments.length === 1 : segments.includes(route);
@@ -43,24 +44,32 @@ export function CustomTabBar({ routes }: CustomTabBarProps) {
                         key={route.name}
                         style={styles.tab}
                         activeOpacity={0.7}
-                        onPress={() => router.push(route.name)}>
-
-                        {route.title ? <>
-                            <SvgXml xml={isActive ? route.activeIcon() : route.inactiveIcon()} />
-                            <Text style={styles.label}>{route.title}</Text>
-
-                        </> :
-                            <TouchableOpacity activeOpacity={0.7} onPress={() => router.push(route.name)} style={{ padding: 10, backgroundColor: Colors.primary_blue, borderRadius: 10 }} >
-                                <AntDesign name="plus" size={24} color={'white'} />
-                            </TouchableOpacity>
-                        }
-
-
-
-
+                        onPress={() => {
+                            if (route.name === 'create-report') {
+                                setCreateReportModalVisible(true); // Show modal when plus button is pressed
+                            } else {
+                                router.push(route.name);
+                            }
+                        }}
+                    >
+                        {route.title ? (
+                            <>
+                                <SvgXml xml={isActive ? route.activeIcon() : route.inactiveIcon()} />
+                                <Text style={styles.label}>{route.title}</Text>
+                            </>
+                        ) : (
+                            <View style={styles.plusButton}>
+                                <AntDesign name="plus" size={24} color="white" />
+                            </View>
+                        )}
                     </TouchableOpacity>
                 );
             })}
+
+            <CreateReportModalComponent
+                modalVisible={createReportModalVisible}
+                setModalVisible={setCreateReportModalVisible}
+            />
         </View>
     );
 }
@@ -70,7 +79,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: Colors.light.background,
         paddingVertical: 10,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,
@@ -78,7 +87,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 4,
-        paddingBottom: Platform.OS === 'ios' ? heightPercentageToDP(2) : 10
+        paddingBottom: Platform.OS === 'ios' ? heightPercentageToDP(2) : 10,
     },
     tab: {
         flex: 1,
@@ -88,6 +97,11 @@ const styles = StyleSheet.create({
     label: {
         marginTop: 4,
         fontSize: 12,
-        color: 'black'
+        color: 'black',
+    },
+    plusButton: {
+        padding: 10,
+        backgroundColor: Colors.primary_blue,
+        borderRadius: 10,
     },
 });

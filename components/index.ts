@@ -1,4 +1,5 @@
 import Button from "./Button";
+import CreateReportModalComponent from "./CreateReportModal";
 import FilterModalComponent from "./FilterModal";
 import Input from "./Input";
 import ReportCard from "./ReportCard";
@@ -9,5 +10,6 @@ export const Components = {
     Input,
     AppVersion,
     ReportCard,
-    FilterModalComponent
+    FilterModalComponent,
+    CreateReportModalComponent
 }
