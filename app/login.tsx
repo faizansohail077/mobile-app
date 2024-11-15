@@ -7,6 +7,7 @@ import { Components } from '@/components';
 import { useState } from 'react';
 import { Router, useRouter } from 'expo-router';
 import Modal from "react-native-modal";
+import AppVersion from '@/components/Version';
 
 export default function HomeScreen() {
   const [email, setEmail] = useState("")
@@ -42,9 +43,8 @@ export default function HomeScreen() {
             <Components.Button onPress={() => submit()} disabled={!email || !password} title='SUBMIT' />
           </View>
 
-          <View style={styles.bottomContainer}>
-            <Text style={styles.bottomText1} >PTW Management Portal</Text>
-            <Text style={styles.bottomText2}>v1.1.0</Text>
+          <View style={{ marginTop: heightPercentageToDP(5) }}>
+            <AppVersion />
           </View>
         </View>
 
@@ -61,9 +61,6 @@ const styles = StyleSheet.create({
     objectFit: 'cover',
     borderBottomLeftRadius: widthPercentageToDP(15)
   },
-  bottomContainer: { marginTop: heightPercentageToDP(5), flexDirection: 'column', gap: 2, alignItems: 'center' },
-  bottomText1: { color: "rgba(117, 117, 117, 1)", fontWeight: 'bold', fontSize: widthPercentageToDP(3) },
-  bottomText2: { color: "rgba(117, 117, 117, 1)", fontSize: widthPercentageToDP(3.5) },
   topContainer: { flexDirection: 'column', gap: 10, marginTop: heightPercentageToDP(3), marginHorizontal: widthPercentageToDP(5), height: heightPercentageToDP(55), alignItems: 'center' },
   inputContainer: { marginTop: heightPercentageToDP(3), width: "100%", gap: 20 },
   buttonContainer: { marginTop: heightPercentageToDP(3), width: '100%' },
