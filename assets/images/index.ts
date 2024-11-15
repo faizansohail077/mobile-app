@@ -8,6 +8,13 @@ import inActiveHome from './inActiveHome'
 import activeDocument from './activeDocument'
 import inActiveDocument from './inActiveDocument'
 
+import profile from './profile'
+import filter from './filter'
+import notification from './notification'
+import menu from './menu'
+import search from './search'
+
+
 export const Images = {
     logo,
     login,
@@ -16,5 +23,10 @@ export const Images = {
     activeHome,
     inActiveDocument,
     activeDocument,
-    inActiveHome
+    inActiveHome,
+    search,
+    profile,
+    menu,
+    notification,
+    filter
 }
