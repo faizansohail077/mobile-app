@@ -12,6 +12,13 @@ export const Colors = {
   light_black:"rgba(0, 0, 0, 0.6)",
   white:"#ffffff",
   red:"rgba(240, 68, 56, 1)",
+  dark_red:"rgba(211, 47, 47, 1)",
+  orange:"rgba(239, 108, 0, 1)",
+  green:"rgba(46, 125, 50, 1)",
+  dark_blue:"rgba(2, 136, 209, 1)",
+  purple:"rgba(156, 39, 176, 1)",
+  light_grey:"rgba(0, 0, 0, 0.08)",
+  black:'black',
   light: {
     text: '#11181C',
     background: '#fff',

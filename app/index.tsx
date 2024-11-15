@@ -3,7 +3,7 @@ import { StyleSheet, View, SafeAreaView, Platform, Text } from 'react-native';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 import { SvgXml } from 'react-native-svg'
 import { Router, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import AppVersion from '@/components/Version';
 
 import { LogBox } from 'react-native';
@@ -13,7 +13,6 @@ LogBox.ignoreAllLogs();
 
 export default function HomeScreen() {
     const router: Router = useRouter();
-    const [loader, setLoader] = useState(true)
 
     useEffect(() => {
         setTimeout(() => {
@@ -31,9 +30,7 @@ export default function HomeScreen() {
             }
         } catch (error) {
             console.log(error, 'error fetchUser')
-        } finally {
-            setLoader(false)
-        }
+        } 
     }
 
     return (

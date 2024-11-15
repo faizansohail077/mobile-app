@@ -6,6 +6,8 @@ import { SvgXml } from 'react-native-svg';
 import { Images } from '@/assets/images';
 import { tab_list } from '@/constants/user';
 import { Colors } from '@/constants/Colors';
+import { report_list } from '@/constants/reportData';
+import ReportCard from '@/components/ReportCard';
 
 const menuOptions = [
   { text: "View Profile", goTo: "" },
@@ -18,6 +20,13 @@ export default function HomeScreen() {
   const [selectedTab, setSelectedTab] = useState<any>({ id: 0, text: "reports" });
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [fadeAnim] = useState(new Animated.Value(0));
+  const [reportData, setReportData] = useState<any>([])
+
+
+  useEffect(() => {
+    const filterData = report_list.filter((item) => item.type === selectedTab.text)
+    setReportData(filterData)
+  }, [selectedTab])
 
   useEffect(() => {
     fetchUser()
@@ -142,7 +151,23 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
 
-        
+        {/* reports */}
+        <View style={{ height: heightPercentageToDP(65), paddingBottom: heightPercentageToDP(2) }} >
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={reportData}
+            renderItem={({ item }) => (
+              item?.reports?.map((report: any, index: number) => (
+                <ReportCard
+                  key={index}
+                  data={report}
+                  type={item.type}
+                />
+              ))
+            )}
+            keyExtractor={(_, index) => index.toString()} 
+          />
+        </View>
       </View>
 
     </>
@@ -228,7 +253,7 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontWeight: '500',
   },
-  bottomContainer: { zIndex: -1, paddingHorizontal: widthPercentageToDP(3), paddingVertical: heightPercentageToDP(2) },
-  searchBarMainContainer: { flexDirection: 'row', gap: 10, alignItems: 'center' },
+  bottomContainer: { zIndex: -1, paddingHorizontal: widthPercentageToDP(3), paddingVertical: heightPercentageToDP(2), gap: 5 },
+  searchBarMainContainer: { flexDirection: 'row', gap: 10, alignItems: 'center',justifyContent:'space-between' },
   searchBox: { backgroundColor: Colors.white, borderWidth: 2, borderColor: 'rgba(208, 213, 221, 1)', borderRadius: 10, width: '90%', paddingHorizontal: widthPercentageToDP(2), height: heightPercentageToDP(5), alignContent: 'center', flexDirection: 'row', gap: 5, alignItems: 'center' },
 });
