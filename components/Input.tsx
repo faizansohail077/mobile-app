@@ -23,6 +23,7 @@ const Input = ({ value, setValue, title, placeholder, icon = false, onIconPress,
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     ref={inputRef}
+                    autoCapitalize='none'
                     secureTextEntry={showPassword}
                     placeholderTextColor={isFocused ? Colors.primary_blue : "rgba(0, 0, 0, 0.38)"}
                     placeholder={isFocused ? "" : placeholder} style={styles.inputField} />

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Router, useRouter } from 'expo-router';
 import Modal from "react-native-modal";
 import AppVersion from '@/components/Version';
+import { setLoggedUser, users } from '@/lib/user';
 
 export default function HomeScreen() {
   const [email, setEmail] = useState("")
@@ -17,10 +18,13 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   const submit = () => {
-    if (email === "test") {
+
+    const findEmail = users.find((user) => user.email === email)
+    if (!findEmail) {
       setModalVisible(true)
     } else {
-      router.push('/(tabs)')
+      router.replace('/(tabs)')
+      setLoggedUser(findEmail)
     }
   }
 
