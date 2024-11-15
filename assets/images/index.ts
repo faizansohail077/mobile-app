@@ -13,7 +13,7 @@ import filter from './filter'
 import notification from './notification'
 import menu from './menu'
 import search from './search'
-
+import close from './close'
 
 export const Images = {
     logo,
@@ -28,5 +28,6 @@ export const Images = {
     profile,
     menu,
     notification,
-    filter
+    filter,
+    close
 }

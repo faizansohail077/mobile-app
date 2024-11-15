@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Platform, TouchableOpacity, ScrollView, FlatList, TextInput, Animated } from 'react-native';
+import { StyleSheet, View, Text, Platform, TouchableOpacity, FlatList, TextInput, Animated } from 'react-native';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 import { getData } from '@/lib/helpers';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,8 @@ import { Images } from '@/assets/images';
 import { tab_list } from '@/constants/user';
 import { Colors } from '@/constants/Colors';
 import { report_list } from '@/constants/reportData';
-import ReportCard from '@/components/ReportCard';
+import {Components} from '@/components';
+
 
 const menuOptions = [
   { text: "View Profile", goTo: "" },
@@ -21,6 +22,7 @@ export default function HomeScreen() {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [fadeAnim] = useState(new Animated.Value(0));
   const [reportData, setReportData] = useState<any>([])
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
 
 
   useEffect(() => {
@@ -146,7 +148,7 @@ export default function HomeScreen() {
             <SvgXml xml={Images.search()} />
             <TextInput placeholderTextColor={"rgba(102, 112, 133, 1)"} placeholder='Search by Report Number' style={{ width: '90%' }} />
           </View>
-          <TouchableOpacity activeOpacity={0.7} >
+          <TouchableOpacity onPress={()=>setFilterModalVisible(true)} activeOpacity={0.7} >
             <SvgXml xml={Images.filter()} />
           </TouchableOpacity>
         </View>
@@ -158,17 +160,18 @@ export default function HomeScreen() {
             data={reportData}
             renderItem={({ item }) => (
               item?.reports?.map((report: any, index: number) => (
-                <ReportCard
+                <Components.ReportCard
                   key={index}
                   data={report}
                   type={item.type}
                 />
               ))
             )}
-            keyExtractor={(_, index) => index.toString()} 
+            keyExtractor={(_, index) => index.toString()}
           />
         </View>
       </View>
+      <Components.FilterModalComponent modalVisible={filterModalVisible} setModalVisible={setFilterModalVisible} />
 
     </>
   );
@@ -254,6 +257,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   bottomContainer: { zIndex: -1, paddingHorizontal: widthPercentageToDP(3), paddingVertical: heightPercentageToDP(2), gap: 5 },
-  searchBarMainContainer: { flexDirection: 'row', gap: 10, alignItems: 'center',justifyContent:'space-between' },
+  searchBarMainContainer: { flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between' },
   searchBox: { backgroundColor: Colors.white, borderWidth: 2, borderColor: 'rgba(208, 213, 221, 1)', borderRadius: 10, width: '90%', paddingHorizontal: widthPercentageToDP(2), height: heightPercentageToDP(5), alignContent: 'center', flexDirection: 'row', gap: 5, alignItems: 'center' },
 });
