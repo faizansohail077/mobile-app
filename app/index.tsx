@@ -6,6 +6,10 @@ import { Router, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import AppVersion from '@/components/Version';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); 
+LogBox.ignoreAllLogs();
+
 export default function HomeScreen() {
     const router: Router = useRouter();
 
