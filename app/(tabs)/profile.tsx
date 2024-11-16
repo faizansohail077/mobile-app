@@ -67,7 +67,7 @@ const Profile = () => {
                         <Text style={styles.headerText}>Account Related</Text>
                     </View>
 
-                    <TouchableOpacity activeOpacity={0.7} style={styles.navigationContainer} >
+                    <TouchableOpacity onPress={() => router.push({ 'pathname': '/(tabs)/changePassword' })}  activeOpacity={0.7} style={styles.navigationContainer} >
                         <Text style={{ color: Colors.primary_blue }}>{`Change Password`.toUpperCase()}</Text>
                         <AntDesign name="right" size={16} color={Colors.primary_blue} />
                     </TouchableOpacity>

@@ -16,6 +16,8 @@ import menu from './menu'
 import search from './search'
 import close from './close'
 import success from './success'
+import valid from './valid'
+import invalid from './invalid'
 
 export const Images = {
     logo,
@@ -33,5 +35,7 @@ export const Images = {
     filter,
     close,
     success,
-    calender
+    calender,
+    invalid,
+    valid
 }
