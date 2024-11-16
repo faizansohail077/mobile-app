@@ -18,16 +18,46 @@ const permissions = [
             { text: "Permit To Work", goTo: '/createPTW' },
             { text: "Incident Reporting", goTo: '/createIncidentReport' },
         ]
+    },
+    {
+        role: user_role["Safety-Assessor"], permission: [
+            { text: "Permit To Work", goTo: '/createPTW' },
+            { text: "HSE Inspection", goTo: '/createHSEInspection' },
+            { text: "Incident Reporting", goTo: '/createIncidentReport' },
+
+        ]
     }
 ]
 
+const tabs = [
+    {
+        role: user_role["Supervisor"], tabs: [
+            { heading: "Frequently used", subTabs: ["Daily Checklist", "Permit To Work", "Communication Record"] },
+            { heading: "Others", subTabs: ["Monthly Checklist", "Incident Reporting", "MS, RA and SWP"] },
+        ]
+    },
+    {
+        role: user_role["Safety-Assessor"], tabs: [
+            { heading: "Frequently used", subTabs: ["Permit To Work", "HSE Inspection"] },
+            { heading: "Others", subTabs: ["Incident Reporting", "MS, RA and SWP"] },
+        ]
+    },
+
+
+]
+
 export default function CreateReportModalComponent({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: any }) {
-   
+
     const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
     const [user, setUser] = useState<any>(null);
     const router: Router = useRouter()
-   
-   
+    const [loader, setLoader] = useState(true)
+
+    useEffect(() => {
+        fetchUser()
+    }, [])
+
+
     const submit = () => {
         if (!selectedRadio) {
             Alert.alert("Please select a report type");
@@ -46,7 +76,7 @@ export default function CreateReportModalComponent({ modalVisible, setModalVisib
         );
 
         if (allowedPermission) {
-            console.log(allowedPermission,'allowedPermission')
+            console.log(allowedPermission, 'allowedPermission')
             router.push({ pathname: allowedPermission.goTo })
             setModalVisible(!modalVisible);
         } else {
@@ -72,8 +102,13 @@ export default function CreateReportModalComponent({ modalVisible, setModalVisib
             }
         } catch (error) {
             console.log(error, 'error fetchUser')
+        } finally {
+            setLoader(false)
         }
     }
+
+    if (loader) return <Text>Loading...</Text>
+
 
     return (
         <Modal
@@ -95,46 +130,28 @@ export default function CreateReportModalComponent({ modalVisible, setModalVisib
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ width: '100%', gap: 20 }} >
-                        <Text style={modalstyles.radioHeading}>Frequently used</Text>
-                        {["Daily Checklist", "Permit To Work", "Communication Record"].map((option, index) => (
-                            <View key={index}>
-                                <RadioButtonGroup
-                                    selected={selectedRadio}
-                                    onSelected={(value: string) => handleSelect(value)}
-                                    radioBackground={Colors.primary_blue}
+                    {tabs?.filter((item) => item.role === user.role)[0].tabs?.map((item) => {
+                        return <View style={{ width: '100%', gap: 20 }} >
+                            <Text style={modalstyles.radioHeading}>{item?.heading}</Text>
+                            {item?.subTabs?.map((option, index) => (
+                                <View key={index}>
+                                    <RadioButtonGroup
+                                        selected={selectedRadio}
+                                        onSelected={(value: string) => handleSelect(value)}
+                                        radioBackground={Colors.primary_blue}
 
-                                >
-                                    <RadioButtonItem
-                                        value={option}
-                                        label={
-                                            <Text style={{ marginLeft: 10, fontSize: widthPercentageToDP(4) }}>{option}</Text>
-                                        }
-                                    />
-                                </RadioButtonGroup>
-                            </View>
-                        ))}
-                    </View>
-
-                    <View style={{ width: '100%', gap: 20 }}>
-                        <Text style={modalstyles.radioHeading}>Others</Text>
-                        {["Monthly Checklist", "Incident Reporting", "MS, RA and SWP"].map((option, index) => (
-                            <View key={index}>
-                                <RadioButtonGroup
-                                    selected={selectedRadio}
-                                    onSelected={(value: string) => handleSelect(value)}
-                                    radioBackground={Colors.primary_blue}
-                                >
-                                    <RadioButtonItem
-                                        value={option}
-                                        label={
-                                            <Text style={{ marginLeft: 10, fontSize: widthPercentageToDP(4) }}>{option}</Text>
-                                        }
-                                    />
-                                </RadioButtonGroup>
-                            </View>
-                        ))}
-                    </View>
+                                    >
+                                        <RadioButtonItem
+                                            value={option}
+                                            label={
+                                                <Text style={{ marginLeft: 10, fontSize: widthPercentageToDP(4) }}>{option}</Text>
+                                            }
+                                        />
+                                    </RadioButtonGroup>
+                                </View>
+                            ))}
+                        </View>
+                    })}
 
 
                     <View style={modalstyles.bottomContainer} >
@@ -143,7 +160,7 @@ export default function CreateReportModalComponent({ modalVisible, setModalVisib
 
                 </View>
             </View>
-        </Modal>
+        </Modal >
     )
 }
 
