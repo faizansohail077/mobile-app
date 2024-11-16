@@ -5,6 +5,7 @@ import { SvgXml } from 'react-native-svg';
 import { Images } from '@/assets/images';
 import { widthPercentageToDP } from 'react-native-responsive-screen';
 import { Colors } from '@/constants/Colors';
+import { formatDateTime } from '@/lib/helpers';
 
 const Input = ({
   subTitle,
@@ -17,6 +18,7 @@ const Input = ({
   onIconPress,
   showPassword = false,
   isCalendar = false,
+  isTime = false,
 }: {
   inputTitleStyles?: any;
   subTitle?: string;
@@ -28,13 +30,15 @@ const Input = ({
   icon?: boolean;
   onIconPress?: () => void;
   isCalendar?: boolean;
+  isTime?: boolean;
 }) => {
   const inputRef = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
+  const [tempDate, setTempDate] = useState<Date | null>(null);
 
   const handleFocus = () => {
     setIsFocused(true);
-    if (!isCalendar) {
+    if (!isCalendar && !isTime) {
       inputRef.current?.focus();
     }
   };
@@ -43,12 +47,36 @@ const Input = ({
     setIsFocused(false);
   };
 
-  const handleDateChange = (event: any, selectedDate: Date | undefined) => {
-    setIsFocused(false); // Hide the date picker after a date is selected
+  const handleDateTimeChange = (event: any, selectedDate: Date | undefined) => {
+    if (Platform.OS === 'ios' || isCalendar) {
+      setIsFocused(false); // Close the picker on iOS or for calendar
+    }
+  
     if (selectedDate) {
-      setValue(selectedDate.toISOString().split('T')[0]);
+      if (isTime && Platform.OS === 'android' && !tempDate) {
+        // First step: Store the selected date
+        setTempDate(selectedDate);
+      } else if (isTime && Platform.OS === 'android' && tempDate) {
+        // Combine date and time for Android
+        const combinedDate = new Date(
+          tempDate.getFullYear(),
+          tempDate.getMonth(),
+          tempDate.getDate(),
+          selectedDate.getHours(),
+          selectedDate.getMinutes()
+        );
+        setValue(formatDateTime(combinedDate));
+        setTempDate(null);
+        setIsFocused(false);
+      } else {
+        // For iOS or calendar picker
+        setValue(isTime ? formatDateTime(selectedDate) : selectedDate.toISOString().split('T')[0]);
+      }
+    } else {
+      setIsFocused(false); // Dismiss picker if no date is selected
     }
   };
+  
 
   return (
     <TouchableOpacity
@@ -71,7 +99,7 @@ const Input = ({
           { borderBottomColor: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.42)' },
         ]}
       >
-        {isCalendar ? (
+        {isCalendar || isTime ? (
           <Text style={styles.inputField}>{value || placeholder}</Text>
         ) : (
           <TextInput
@@ -94,7 +122,7 @@ const Input = ({
             <SvgXml xml={Images.eye()} />
           </TouchableOpacity>
         )}
-        {isCalendar && (
+        {(isCalendar || isTime) && (
           <TouchableOpacity onPress={handleFocus}>
             <SvgXml xml={Images.calender()} />
           </TouchableOpacity>
@@ -111,13 +139,32 @@ const Input = ({
         </Text>
       )}
 
-      {isCalendar && isFocused && (
+      {isCalendar && !isTime && isFocused && (
         <DateTimePicker
           value={new Date(value || Date.now())}
-          mode="date"
+          mode={isTime ? 'datetime' : 'date'}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          onChange={handleDateChange}
+          onChange={handleDateTimeChange}
         />
+      )}
+
+      {isFocused && !isCalendar && isTime && (
+        <>
+          <DateTimePicker
+            value={new Date(value || Date.now())}
+            mode={isCalendar || (isTime && Platform.OS === 'ios') ? 'datetime' : 'date'}
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            onChange={handleDateTimeChange}
+          />
+          {isTime && Platform.OS === 'android' && tempDate && (
+            <DateTimePicker
+              value={new Date()}
+              mode="time"
+              display="default"
+              onChange={handleDateTimeChange}
+            />
+          )}
+        </>
       )}
     </TouchableOpacity>
   );
