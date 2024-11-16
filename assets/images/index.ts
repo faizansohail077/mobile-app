@@ -19,6 +19,7 @@ import success from './success'
 import valid from './valid'
 import invalid from './invalid'
 import evidence from './evidence'
+import sign from './sign'
 
 export const Images = {
     logo,
@@ -39,5 +40,6 @@ export const Images = {
     calender,
     invalid,
     valid,
-    evidence
+    evidence,
+    sign
 }

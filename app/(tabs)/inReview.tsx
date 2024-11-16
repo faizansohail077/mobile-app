@@ -21,7 +21,7 @@ const InReview = () => {
         </View>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} style={{ paddingBottom: heightPercentageToDP(2), marginBottom: heightPercentageToDP(2), paddingTop: heightPercentageToDP(2) }} >
+      <ScrollView showsVerticalScrollIndicator={false} style={{ paddingTop: heightPercentageToDP(2) }} >
         <View style={{ paddingHorizontal: widthPercentageToDP(5) }}>
 
           <View style={styles.flexContainer} >
@@ -116,13 +116,14 @@ const InReview = () => {
                 <Text style={styles.valueText}>Chief Supervisor</Text>
               </View>
               <View style={[styles.flexContainer, { justifyContent: 'flex-start', marginTop: heightPercentageToDP(1) }]} >
-                <Text style={styles.keyText}>Expiry: </Text>
-                <Text style={styles.valueText}>Issued</Text>
+                <Text style={styles.keyText}>Issued: </Text>
+                <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
               </View>
             </View>
           </View>
         </View>
 
+        <View style={{ paddingTop: heightPercentageToDP(2)}} />
 
       </ScrollView>
     </>
