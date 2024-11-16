@@ -13,7 +13,7 @@ export default function PasswordUpdateModal({ modalVisible, setModalVisible }: {
 
   const submit = async () => {
     await removeData("user")
-    router.replace({ pathname: "/login" })
+    router.push({ pathname: "/login" })
     setModalVisible(!modalVisible)
   }
 
