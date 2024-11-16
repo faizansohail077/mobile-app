@@ -1,19 +1,79 @@
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import Modal from "react-native-modal";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Images } from "@/assets/images";
 import { Components } from ".";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RadioButtonGroup, { RadioButtonItem } from "expo-radio-button"
 import { Colors } from "@/constants/Colors";
+import { getData } from "@/lib/helpers";
+import { user_role } from "@/constants/user";
+import { Router, useRouter } from "expo-router";
+
+const permissions = [
+    {
+        role: user_role["Supervisor"], permission: [
+            { text: "Communication Record", goTo: '/createCommunicationReport' },
+            { text: "Permit To Work", goTo: '/' },
+            { text: "Incident Reporting", goTo: '/' },
+        ]
+    }
+]
 
 export default function CreateReportModalComponent({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: any }) {
+   
     const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
+    const [user, setUser] = useState<any>(null);
+    const router: Router = useRouter()
+   
+   
+    const submit = () => {
+        if (!selectedRadio) {
+            Alert.alert("Please select a report type");
+            return;
+        }
+
+        const userPermissions = permissions.find((perm) => perm.role === user.role);
+
+        if (!userPermissions) {
+            Alert.alert("You are not allowed to perform any actions");
+            return;
+        }
+
+        const allowedPermission: any = userPermissions.permission.find(
+            (item) => item.text === selectedRadio
+        );
+
+        if (allowedPermission) {
+            console.log(allowedPermission,'allowedPermission')
+            router.push({ pathname: allowedPermission.goTo })
+            setModalVisible(!modalVisible);
+        } else {
+            Alert.alert("You are not allowed to perform this action");
+        }
+    };
 
     const handleSelect = (option: string) => {
         setSelectedRadio((prev) => (prev === option ? null : option));
     };
+
+    useEffect(() => {
+        fetchUser()
+    }, [])
+
+    const fetchUser = async () => {
+        try {
+            const result = await getData('user');
+            if (result) {
+                setUser(result)
+            } else {
+                console.log('no user found')
+            }
+        } catch (error) {
+            console.log(error, 'error fetchUser')
+        }
+    }
 
     return (
         <Modal
@@ -78,7 +138,7 @@ export default function CreateReportModalComponent({ modalVisible, setModalVisib
 
 
                     <View style={modalstyles.bottomContainer} >
-                        <Components.Button title='Proceed' />
+                        <Components.Button onPress={() => submit()} title='Proceed' />
                     </View>
 
                 </View>

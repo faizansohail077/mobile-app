@@ -6,7 +6,7 @@ import { Images } from "@/assets/images";
 import { Components } from "@/components";
 
 
-export default function ReportViewModal({ title, subTitle, cta, buttonTitle, modalVisible, setModalVisible }: { title: string, subTitle: string, cta: () => void, buttonTitle: string, modalVisible: boolean, setModalVisible: any }) {
+export default function ReportViewModal({ title, subTitle, cta, buttonTitle, modalVisible, setModalVisible }: { title: string, subTitle?: string, cta: () => void, buttonTitle: string, modalVisible: boolean, setModalVisible: any }) {
 
 
     return (

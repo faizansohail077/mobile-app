@@ -21,7 +21,7 @@ interface CustomTabBarProps {
 export function CustomTabBar({ routes }: CustomTabBarProps) {
     const router = useRouter();
     const segments: string[] = useSegments();
-    const hideBottomTabBarRoutes = ['approved','communicationRecord','completed', 'hseInspection','incidentReporting', 'profile','rejected','inReview','editProfile','changePassword','notification'];
+    const hideBottomTabBarRoutes = ['createCommunicationReport', 'approved','communicationRecord','completed', 'hseInspection','incidentReporting', 'profile','rejected','inReview','editProfile','changePassword','notification'];
     const [createReportModalVisible, setCreateReportModalVisible] = useState(false);
 
     const isRouteActive = (route: string) => {

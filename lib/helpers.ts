@@ -1,5 +1,73 @@
 import { Users } from '@/constants/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import { Alert } from 'react-native';
+
+export const handleImagePicker = async () => {
+  const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (!permissionResult.granted) {
+    alert("You've refused to allow this app to access your photos!");
+    return null;
+  }
+
+  return new Promise((resolve, reject) => {
+    Alert.alert(
+      'Upload Photo',
+      'Choose an option',
+      [
+        {
+          text: 'Camera',
+          onPress: async () => {
+            try {
+              const result = await ImagePicker.launchCameraAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+              });
+
+              if (!result.canceled) {
+                resolve(result.assets[0].uri);
+              } else {
+                resolve(null);
+              }
+            } catch (error) {
+              console.error('Camera Error:', error);
+              reject(error);
+            }
+          },
+        },
+        {
+          text: 'Gallery',
+          onPress: async () => {
+            try {
+              const result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+              });
+
+              if (!result.canceled) {
+                resolve(result.assets[0].uri);
+              } else {
+                resolve(null);
+              }
+            } catch (error) {
+              console.error('Gallery Error:', error);
+              reject(error);
+            }
+          },
+        },
+        {
+          text: 'Cancel',
+          style: 'cancel',
+          onPress: () => resolve(null),
+        },
+      ],
+      { cancelable: true }
+    );
+  });
+};
 
 export const addData = async (key: string, newData: Users) => {
   try {

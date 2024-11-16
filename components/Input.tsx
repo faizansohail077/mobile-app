@@ -8,6 +8,7 @@ import { Colors } from '@/constants/Colors';
 
 const Input = ({
   subTitle,
+  inputTitleStyles,
   value,
   setValue,
   title,
@@ -17,6 +18,7 @@ const Input = ({
   showPassword = false,
   isCalendar = false,
 }: {
+  inputTitleStyles?: any;
   subTitle?: string;
   value?: string;
   setValue?: any;
@@ -40,15 +42,15 @@ const Input = ({
   };
 
   const handleDateChange = (event: any, selectedDate: Date | undefined) => {
-    setShowDatePicker(Platform.OS === 'ios'); 
+    setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
-      setValue(selectedDate.toISOString().split('T')[0]); 
+      setValue(selectedDate.toISOString().split('T')[0]);
     }
   };
 
   return (
     <TouchableOpacity activeOpacity={1} onPress={handleFocus} style={styles.inputContainer}>
-      <Text style={[styles.inputTitle, { color: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.6)' }]}>
+      <Text style={[styles.inputTitle, inputTitleStyles, { color: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.6)' }]}>
         {title}
       </Text>
       <View style={[styles.inputFieldContainer, { borderBottomColor: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.42)' }]}>
