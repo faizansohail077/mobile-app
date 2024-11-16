@@ -25,8 +25,8 @@ export default function HomeScreen() {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [reportData, setReportData] = useState<any>([])
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [userTabs, setUserTabs] = useState<any>([])
   const router: Router = useRouter();
-
 
   useEffect(() => {
     const filterData = report_list.filter((item) => item.type === selectedTab.text)
@@ -36,6 +36,14 @@ export default function HomeScreen() {
   useEffect(() => {
     fetchUser()
   }, [])
+
+  useEffect(() => {
+    if (user) {
+      const userTabs2 = tab_list.filter((item) => item.role === user.role)
+     
+      setUserTabs(userTabs2)
+    }
+  }, [user])
 
   const fetchUser = async () => {
     try {
@@ -72,19 +80,21 @@ export default function HomeScreen() {
   };
 
 
-  const renderTab = ({ item }: any) => (
-    <TouchableOpacity
-      style={[
-        styles.tab,
-        selectedTab?.id === item.id ? styles.activeTab : styles.inactiveTab,
-      ]}
-      onPress={() => handleTabPress(item)}
-    >
-      <Text style={[styles.tabText,
-      selectedTab?.id === item.id ? styles.activeTabText : styles.inactiveTabText
-      ]}>{item.text.toUpperCase()}</Text>
-    </TouchableOpacity>
-  );
+  const renderTab = ({ item }: any) => {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.tab,
+          selectedTab?.id === item.id ? styles.activeTab : styles.inactiveTab,
+        ]}
+        onPress={() => handleTabPress(item)}
+      >
+        <Text style={[styles.tabText,
+        selectedTab?.id === item.id ? styles.activeTabText : styles.inactiveTabText
+        ]}>{item.text.toUpperCase()}</Text>
+      </TouchableOpacity>
+    )
+  };
 
   const handleOptionSelect = async (option: {
     text: string;
@@ -116,7 +126,7 @@ export default function HomeScreen() {
           </View>
           <View style={{ width: "10%" }} />
           <View style={styles.topRightContainer} >
-            <TouchableOpacity onPress={()=>router.push({pathname:'/notification'})}>
+            <TouchableOpacity onPress={() => router.push({ pathname: '/notification' })}>
               <SvgXml xml={Images.notification()} />
             </TouchableOpacity>
             <TouchableOpacity onPress={toggleMenu}>
@@ -145,7 +155,7 @@ export default function HomeScreen() {
       <View style={{ backgroundColor: 'white', zIndex: -1 }} >
         <FlatList
           horizontal
-          data={tab_list[0]?.tabs || []}
+          data={userTabs[0]?.tabs}
           renderItem={renderTab}
           keyExtractor={(item) => item.id.toString()}
           showsHorizontalScrollIndicator={false}

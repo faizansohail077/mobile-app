@@ -99,6 +99,54 @@ export const report_list = [
         ]
     },
     {
+        type: report_types["need-review"], reports: [
+            {
+                id: "PTW 415929374-1234", tags: [
+                    { color: Colors.orange, text: "Need Review" },
+                    { color: Colors.purple, text: "Hot Work" },
+                ],
+                Issued: "4 Feb 22 at 14:05",
+                Expiry: "8 Feb 22 at 18:00",
+                Location: "Location of work",
+                navigate:"/inReview"
+            },
+            {
+                id: "PTW 415929374-1234", tags: [
+                    { color: Colors.orange, text: "Need Review" },
+                    { color: Colors.light_grey, text: "Confined Space" },
+                ],
+                Issued: "4 Feb 22 at 14:05",
+                Expiry: "8 Feb 22 at 18:00",
+                Location: "Location of work",
+                navigate:"/inReview"
+
+            },
+            {
+                id: "PTW 415929374-1234", tags: [
+                    { color: Colors.orange, text: "Need Review" },
+                    { color: Colors.light_grey, text: "Confined Space" },
+                ],
+                Issued: "4 Feb 22 at 14:05",
+                Expiry: "8 Feb 22 at 18:00",
+                Location: "Location of work",
+                navigate:"/inReview"
+
+            },
+            {
+                id: "PTW 415929374-1234", tags: [
+                    { color: Colors.orange, text: "Need Review" },
+                    { color: Colors.dark_blue, text: "Working at Height" },
+                ],
+                Issued: "4 Feb 22 at 14:05",
+                Expiry: "8 Feb 22 at 18:00",
+                Location: "Location of work",
+                navigate:"/inReview"
+
+            },
+
+        ]
+    },
+    {
         type: report_types["approved"], reports: [
             {
                 id: "PTW 415929374-1234", tags: [

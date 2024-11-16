@@ -1,7 +1,6 @@
 export const user_role = {
     ["Supervisor"]: "Supervisor",
     ["Safety-Assessor"]: "Safety-Assessor",
-    ["approved"]: "approved",
     ["Project-Manager"]: "Project-Manager",
     ["Admin"]: "Admin",
 }
@@ -24,6 +23,7 @@ export type Users = {
 export const report_types = {
     ["reports"]: "reports",
     ["in-review"]: "In review",
+    ["need-review"]: "Need review",
     ["approved"]: "approved",
     ["rejected"]: "rejected",
     ["completed"]: "completed",
@@ -31,9 +31,18 @@ export const report_types = {
 
 export const tab_list = [
     {
-        role: "Supervisor", tabs: [
+        role: user_role["Supervisor"], tabs: [
             { id: 0, text: report_types["reports"] },
             { id: 1, text: report_types["in-review"] },
+            { id: 2, text: report_types["approved"] },
+            { id: 3, text: report_types["rejected"] },
+            { id: 4, text: report_types["completed"] },
+        ]
+    },
+    {
+        role: user_role["Safety-Assessor"], tabs: [
+            { id: 0, text: report_types["reports"] },
+            { id: 1, text: report_types["need-review"] },
             { id: 2, text: report_types["approved"] },
             { id: 3, text: report_types["rejected"] },
             { id: 4, text: report_types["completed"] },

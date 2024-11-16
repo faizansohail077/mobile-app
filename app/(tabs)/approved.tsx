@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Router, useRouter } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -8,16 +8,38 @@ import { SvgXml } from 'react-native-svg';
 import { Images } from '@/assets/images';
 import { Components } from '@/components';
 import { ReportViewModal } from '@/components/Modal';
+import { getData } from '@/lib/helpers';
+import { user_role } from '@/constants/user';
 
 const Approved = () => {
   const router: Router = useRouter();
   const [successModalVisible, setSuccessModalVisible] = useState(false);
-
+  const [user, setUser] = useState<any>({})
+  const [loader, setLoader] = useState(true)
   const tags = [{ text: "Approved", color: Colors.green }, { text: "Confined Space", color: Colors.light_grey }]
   const onSuccess = () => {
     setSuccessModalVisible(false)
     router.push({ 'pathname': '/(tabs)/' })
   }
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
+  const fetchUser = async () => {
+    try {
+      const result = await getData('user');
+      setUser(result)
+    } catch (error) {
+      console.log(error, 'error fetchUser')
+    } finally {
+      setLoader(false)
+    }
+  }
+
+  if (loader) return <Text>Loading...</Text>
+
+
   return (
     <>
       <View style={styles.topContainer} >
@@ -169,10 +191,32 @@ const Approved = () => {
                 <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
               </View>
               <SvgXml xml={Images.sign()} />
-              <Components.Button onPress={() => setSuccessModalVisible(true)} backgroundColor={Colors.green} buttonContainerStyle={{ marginTop: 10 }} title={`mark as completed`.toUpperCase()} />
+              {user.role != user_role["Safety-Assessor"] && < Components.Button onPress={() => setSuccessModalVisible(true)} backgroundColor={Colors.green} buttonContainerStyle={{ marginTop: 10 }} title={`mark as completed`.toUpperCase()} />}
             </View>
           </View>
         </View>
+
+        {user?.role === user_role["Safety-Assessor"] && <View style={styles.navigationTopContainer}>
+          <View style={{ gap: 10 }} >
+            <Text style={styles.headerText}>Closing Supervisor</Text>
+            <View>
+              <View style={[styles.flexContainer, { justifyContent: 'flex-start', marginTop: heightPercentageToDP(1) }]} >
+                <Text style={styles.keyText}>Name: </Text>
+                <Text style={styles.valueText}>Peter Tan</Text>
+              </View>
+              <View style={[styles.flexContainer, { justifyContent: 'flex-start', marginTop: heightPercentageToDP(1) }]} >
+                <Text style={styles.keyText}>Role: </Text>
+                <Text style={styles.valueText}>Chief Supervisor</Text>
+              </View>
+              <View style={[styles.flexContainer, { justifyContent: 'flex-start', marginTop: heightPercentageToDP(1) }]} >
+                <Text style={styles.keyText}>Closed: </Text>
+                <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
+              </View>
+            </View>
+          </View>
+        </View>}
+
+
         <View style={{ paddingTop: heightPercentageToDP(2) }} />
 
         <ReportViewModal cta={() => onSuccess()} buttonTitle='go back home' title='This PTW is successfully marked as completed' subTitle='Go back home to view all other PTWs that are pending action.' modalVisible={successModalVisible} setModalVisible={setSuccessModalVisible} />

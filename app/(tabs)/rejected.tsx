@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Router, useRouter } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -7,10 +7,33 @@ import { Colors } from '@/constants/Colors';
 import { SvgXml } from 'react-native-svg';
 import { Images } from '@/assets/images';
 import { Components } from '@/components';
+import { getData } from '@/lib/helpers';
+import { user_role } from '@/constants/user';
 
 const Rejected = () => {
   const router: Router = useRouter();
   const tags = [{ text: "Rejected", color: Colors.red }, { text: "Hot Work", color: Colors.purple }]
+
+  const [user, setUser] = useState<any>({})
+  const [loader, setLoader] = useState(true)
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
+  const fetchUser = async () => {
+    try {
+      const result = await getData('user');
+      setUser(result)
+    } catch (error) {
+      console.log(error, 'error fetchUser')
+    } finally {
+      setLoader(false)
+    }
+  }
+
+  if (loader) return <Text>Loading...</Text>
+
 
   return (
     <>
@@ -146,7 +169,7 @@ const Rejected = () => {
                 <Text style={[styles.valueText, { lineHeight: heightPercentageToDP(2.5) }]}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</Text>
               </View>
             </View>
-            <Components.Button onPress={() => router.push({ pathname: '/createPTW', params: { title: "Edit", isRejected: 'yes' } })} buttonContainerStyle={{ marginTop: 10 }} title={`resubmit`.toUpperCase()} />
+            {user.role != user_role["Safety-Assessor"] && <Components.Button onPress={() => router.push({ pathname: '/createPTW', params: { title: "Edit", isRejected: 'yes' } })} buttonContainerStyle={{ marginTop: 10 }} title={`resubmit`.toUpperCase()} />}
           </View>
         </View>
 
