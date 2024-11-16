@@ -20,6 +20,8 @@ import valid from './valid'
 import invalid from './invalid'
 import evidence from './evidence'
 import sign from './sign'
+import file from './file'
+import download from './download'
 
 export const Images = {
     logo,
@@ -41,5 +43,7 @@ export const Images = {
     invalid,
     valid,
     evidence,
-    sign
+    sign,
+    download,
+    file
 }
