@@ -1,16 +1,17 @@
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
-import { Router, useRouter } from 'expo-router'
+import { Router, useLocalSearchParams, useRouter, } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
 import { Components } from '@/components';
 import { ReportViewModal } from '@/components/Modal';
-import { formatDateTime, handleImagePicker, pickPDF } from '@/lib/helpers';
+import { handleImagePicker } from '@/lib/helpers';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const CreatePTW = () => {
     const router: Router = useRouter();
+    const item = useLocalSearchParams();
     const [selectedTab, setSelectedTab] = React.useState({ text: "Hot Work", id: 0 })
     const [successModalVisible, setSuccessModalVisible] = useState(false);
     const [photos, setPhotos] = useState([]);
@@ -75,7 +76,7 @@ const CreatePTW = () => {
             <View style={styles.topContainer} >
                 <View style={styles.topSubContainer} >
                     <AntDesign onPress={() => router.push({ 'pathname': '/(tabs)/' })} name="left" size={24} color="black" />
-                    <Text style={styles.headerText}>Create PTW</Text>
+                    <Text style={styles.headerText}>{item?.title ? 'Resubmit' : `Create`} PTW</Text>
                     <AntDesign style={{ opacity: 0 }} name="left" size={24} color="black" />
                 </View>
             </View>
@@ -191,30 +192,79 @@ const CreatePTW = () => {
                         </View>
                     </View>
 
-                    <View style={styles.navigationTopContainer}>
-                        <View style={{ gap: 20 }} >
-                            <Text style={styles.headerText}>Issuer Detail</Text>
-                            <View style={{ gap: 10 }} >
-                                <View style={{ flexDirection: 'row', gap: 5 }} >
-                                    <Text style={styles.key}>Name: </Text>
-                                    <Text style={styles.value}>Peter Tan</Text>
+                    {item?.isRejected === "yes" ?
+                        <View style={styles.navigationTopContainer}>
+                            <View style={{ gap: 20 }} >
+                                <Text style={styles.headerText}>Issuer Detail</Text>
+                                <View style={{ gap: 10 }} >
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Name: </Text>
+                                        <Text style={styles.value}>Peter Tan</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Role: </Text>
+                                        <Text style={styles.value}>Supervisor</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Issued: </Text>
+                                        <Text style={styles.value}>4 Feb 22 at 14:05</Text>
+                                    </View>
                                 </View>
-                                <View style={{ flexDirection: 'row', gap: 5 }} >
-                                    <Text style={styles.key}>Role: </Text>
-                                    <Text style={styles.value}>Supervisor</Text>
-                                </View>
-                            </View>
-                            <View style={{ marginTop: heightPercentageToDP(3) }}>
-                                <Components.Button disabled={!photos.length} onPress={() => setSuccessModalVisible(true)} title={`submit for approval`.toUpperCase()} />
+
                             </View>
                         </View>
-                    </View>
 
+                        : <View style={styles.navigationTopContainer}>
+                            <View style={{ gap: 20 }} >
+                                <Text style={styles.headerText}>Issuer Detail</Text>
+                                <View style={{ gap: 10 }} >
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Name: </Text>
+                                        <Text style={styles.value}>Peter Tan</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Role: </Text>
+                                        <Text style={styles.value}>Supervisor</Text>
+                                    </View>
+                                </View>
+                                <View style={{ marginTop: heightPercentageToDP(3) }}>
+                                    <Components.Button disabled={!photos.length} onPress={() => setSuccessModalVisible(true)} title={`submit for approval`.toUpperCase()} />
+                                </View>
+                            </View>
+                        </View>}
+                    {item?.isRejected === "yes" &&
+                        <View style={styles.navigationTopContainer}>
+                            <View style={{ gap: 20 }} >
+                                <Text style={styles.headerText}>Safety Assessor</Text>
+                                <View style={{ gap: 10 }} >
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Name: </Text>
+                                        <Text style={styles.value}>Charles Lim</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Role: </Text>
+                                        <Text style={styles.value}>Chief Safety Assessor</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 5 }} >
+                                        <Text style={styles.key}>Rejected: </Text>
+                                        <Text style={styles.value}>4 Feb 22 at 14:05</Text>
+                                    </View>
+                                    <View style={{ gap: 5 }} >
+                                        <Text style={styles.key}>Reason for rejection: </Text>
+                                        <Text style={styles.value}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</Text>
+                                    </View>
+                                </View>
+                                <View style={{ marginTop: heightPercentageToDP(3) }}>
+                                    <Components.Button disabled={!photos.length} onPress={() => setSuccessModalVisible(true)} title={`Resubmit`.toUpperCase()} />
+                                </View>
+                            </View>
+                        </View>
+                    }
 
                 </View>
 
                 <View style={{ paddingTop: heightPercentageToDP(2) }} />
-                <ReportViewModal cta={() => onSuccess()} buttonTitle='go back home' title='Your Permit To Work has been successfully created' subTitle='Go back home to view all other PTWs that are pending action.' modalVisible={successModalVisible} setModalVisible={setSuccessModalVisible} />
+                <ReportViewModal cta={() => onSuccess()} buttonTitle='go back home' title={item?.isRejected === "yes" ? "This PTW is successfully resubmitted for approval" : 'Your Permit To Work has been successfully created'} subTitle='Go back home to view all other PTWs that are pending action.' modalVisible={successModalVisible} setModalVisible={setSuccessModalVisible} />
 
 
             </ScrollView>

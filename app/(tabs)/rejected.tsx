@@ -141,12 +141,12 @@ const Rejected = () => {
                 <Text style={styles.keyText}>Rejected: </Text>
                 <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
               </View>
-              <View style={[{gap: 10, marginTop: heightPercentageToDP(1) }]} >
+              <View style={[{ gap: 10, marginTop: heightPercentageToDP(1) }]} >
                 <Text style={styles.keyText}>Reason for rejection: </Text>
-                <Text style={[styles.valueText,{lineHeight:heightPercentageToDP(2.5)}]}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</Text>
+                <Text style={[styles.valueText, { lineHeight: heightPercentageToDP(2.5) }]}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</Text>
               </View>
             </View>
-            <Components.Button buttonContainerStyle={{ marginTop: 10 }} title={`resubmit`.toUpperCase()} />
+            <Components.Button onPress={() => router.push({ pathname: '/createPTW', params: { title: "Edit", isRejected: 'yes' } })} buttonContainerStyle={{ marginTop: 10 }} title={`resubmit`.toUpperCase()} />
           </View>
         </View>
 
