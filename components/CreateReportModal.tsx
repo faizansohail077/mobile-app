@@ -16,7 +16,7 @@ const permissions = [
         role: user_role["Supervisor"], permission: [
             { text: "Communication Record", goTo: '/createCommunicationReport' },
             { text: "Permit To Work", goTo: '/' },
-            { text: "Incident Reporting", goTo: '/' },
+            { text: "Incident Reporting", goTo: '/createIncidentReport' },
         ]
     }
 ]

@@ -31,37 +31,56 @@ const Input = ({
 }) => {
   const inputRef = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const handleFocus = () => {
-    if (isCalendar) {
-      setShowDatePicker(true);
-    } else {
+    setIsFocused(true);
+    if (!isCalendar) {
       inputRef.current?.focus();
     }
   };
 
+  const handleBlur = () => {
+    setIsFocused(false);
+  };
+
   const handleDateChange = (event: any, selectedDate: Date | undefined) => {
-    setShowDatePicker(Platform.OS === 'ios');
+    setIsFocused(false); // Hide the date picker after a date is selected
     if (selectedDate) {
       setValue(selectedDate.toISOString().split('T')[0]);
     }
   };
 
   return (
-    <TouchableOpacity activeOpacity={1} onPress={handleFocus} style={styles.inputContainer}>
-      <Text style={[styles.inputTitle, inputTitleStyles, { color: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.6)' }]}>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={handleFocus}
+      style={styles.inputContainer}
+    >
+      <Text
+        style={[
+          styles.inputTitle,
+          inputTitleStyles,
+          { color: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.6)' },
+        ]}
+      >
         {title}
       </Text>
-      <View style={[styles.inputFieldContainer, { borderBottomColor: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.42)' }]}>
+      <View
+        style={[
+          styles.inputFieldContainer,
+          { borderBottomColor: isFocused ? Colors.primary_blue : 'rgba(0, 0, 0, 0.42)' },
+        ]}
+      >
         {isCalendar ? (
           <Text style={styles.inputField}>{value || placeholder}</Text>
         ) : (
           <TextInput
             value={value}
-            onChangeText={(e) => setValue(e)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onChangeText={(e) => {
+              setValue ? setValue(e) : console.log(e, 'e text');
+            }}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             ref={inputRef}
             autoCapitalize="none"
             secureTextEntry={showPassword}
@@ -76,14 +95,23 @@ const Input = ({
           </TouchableOpacity>
         )}
         {isCalendar && (
-          <TouchableOpacity onPress={onIconPress}>
+          <TouchableOpacity onPress={handleFocus}>
             <SvgXml xml={Images.calender()} />
           </TouchableOpacity>
         )}
       </View>
-      {subTitle && <Text style={{ fontSize: widthPercentageToDP(3), color: 'rgba(0, 0, 0, 0.6)' }}>{subTitle}</Text>}
+      {subTitle && (
+        <Text
+          style={{
+            fontSize: widthPercentageToDP(3),
+            color: 'rgba(0, 0, 0, 0.6)',
+          }}
+        >
+          {subTitle}
+        </Text>
+      )}
 
-      {showDatePicker && (
+      {isCalendar && isFocused && (
         <DateTimePicker
           value={new Date(value || Date.now())}
           mode="date"

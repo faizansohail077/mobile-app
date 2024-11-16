@@ -2,6 +2,39 @@ import { Users } from '@/constants/user';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
+import * as DocumentPicker from 'expo-document-picker';
+
+
+const formatFileSize = (sizeInBytes: number): string => {
+  if (sizeInBytes >= 1048576) {
+    return `${(sizeInBytes / 1048576).toFixed(2)} MB`;
+  } else if (sizeInBytes >= 1024) {
+    return `${(sizeInBytes / 1024).toFixed(2)} KB`;
+  }
+  return `${sizeInBytes} bytes`;
+};
+
+export const pickPDF = async (): Promise<{ name: string; size: any } | null> => {
+  try {
+    const result: any = await DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+    });
+    console.log(result, 'result')
+
+    if (result.type === 'cancel') {
+      console.log('User cancelled the picker');
+      return null;
+    }
+
+    return {
+      name: result.assets[0].name || 'Unnamed File',
+      size: formatFileSize(result.assets[0].size || 0),
+    };
+  } catch (error) {
+    console.error('Error picking PDF:', error);
+    return null;
+  }
+};
 
 export const handleImagePicker = async () => {
   const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();

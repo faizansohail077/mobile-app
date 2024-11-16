@@ -79,8 +79,8 @@ const CreateCommunicationReport = () => {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} style={{ paddingTop: heightPercentageToDP(2) }} >
-        <View style={{ paddingHorizontal: widthPercentageToDP(5) }}>
-          <View >
+        <View >
+          <View style={{ paddingHorizontal: widthPercentageToDP(5) }}>
             <Text style={styles.headerText}>Record Type</Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 10 }} >
               {tabs.map((tab, index) => (
