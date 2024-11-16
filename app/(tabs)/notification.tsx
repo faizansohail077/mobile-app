@@ -4,7 +4,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { Router, useRouter } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
-import { MemoCard } from '@/components/Card';
+import { ChecklistCard, MemoCard, NotificationReportCard } from '@/components/Card';
 
 const tabs = [{ id: 0, text: "ALL NOTIFICATIONS" }, { id: 1, text: "COMPANY MEMO" }]
 
@@ -52,12 +52,18 @@ const Notifications = () => {
 
 
 
-      <ScrollView style={{paddingHorizontal:widthPercentageToDP(5), paddingTop: heightPercentageToDP(2) }} >
+      <ScrollView showsVerticalScrollIndicator={false} style={{ paddingHorizontal: widthPercentageToDP(5),marginBottom:heightPercentageToDP(5), paddingTop: heightPercentageToDP(2) }} >
 
         {selectedTab.id === 1 ? <>
-        <MemoCard/>
-        
-        </> : <></>}
+          <MemoCard />
+
+        </> : <View style={{ gap: 10 }} >
+          <NotificationReportCard />
+          <MemoCard />
+          <ChecklistCard />
+
+        </View>
+        }
 
       </ScrollView>
     </>
