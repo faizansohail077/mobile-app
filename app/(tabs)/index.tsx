@@ -9,6 +9,7 @@ import { Colors } from '@/constants/Colors';
 import { report_list } from '@/constants/reportData';
 import { Components } from '@/components';
 import { Router, useRouter } from 'expo-router';
+import { ReportCard } from '@/components/Card';
 
 
 const menuOptions = [
@@ -115,7 +116,7 @@ export default function HomeScreen() {
           </View>
           <View style={{ width: "10%" }} />
           <View style={styles.topRightContainer} >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>router.push({pathname:'/notification'})}>
               <SvgXml xml={Images.notification()} />
             </TouchableOpacity>
             <TouchableOpacity onPress={toggleMenu}>
@@ -170,7 +171,7 @@ export default function HomeScreen() {
             data={reportData}
             renderItem={({ item }) => (
               item?.reports?.map((report: any, index: number) => (
-                <Components.ReportCard
+                <ReportCard
                   key={index}
                   data={report}
                   type={item.type}
