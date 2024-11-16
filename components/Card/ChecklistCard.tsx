@@ -1,14 +1,16 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import React from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Colors } from '@/constants/Colors'
+import { Router, useRouter } from 'expo-router'
 
 const ChecklistCard = () => {
-    
+
+    const router: Router = useRouter()
 
     return (
         <>
-            <TouchableOpacity onPress={() => console.log('test1')} style={styles.container} activeOpacity={0.7}>
+            <TouchableOpacity onPress={() => router.push({ pathname: '/rejected' })} style={styles.container} activeOpacity={0.7}>
                 <Text style={styles.idText} >Complete Monthly Checklist</Text>
                 <Text style={{ color: Colors.light_black }}>This is a reminder for you to complete the monthly checklist.</Text>
                 <Text style={{ textAlign: 'right', color: 'rgba(0,0,0,0.6)' }} >5 Feb 22 at 18:00</Text>

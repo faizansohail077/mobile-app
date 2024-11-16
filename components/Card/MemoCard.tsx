@@ -4,15 +4,17 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import { Colors } from '@/constants/Colors'
 import { Components } from '@/components'
 import { AcknowlegedSuccessModal, AskToAcknowlegedeModal } from '@/components/Modal'
+import { Router, useRouter } from 'expo-router'
 
 const MemoCard = () => {
-    
+    const router: Router = useRouter()
+
     const [successModalVisible, setSuccessModalVisible] = useState(false);
     const [askModalVisible, setAskModalVisible] = useState(false);
 
     return (
         <>
-            <TouchableOpacity onPress={() => console.log('test1')} style={styles.container} activeOpacity={0.7}>
+            <TouchableOpacity onPress={() => router.push({ pathname: '/rejected' })} style={styles.container} activeOpacity={0.7}>
                 <Text style={styles.idText} >Memo by Management</Text>
                 <Text style={{ color: Colors.dark_red }} >You are required to acknowledge this memorandum.</Text>
                 <Text style={{ color: Colors.light_black }}>2nd of August is a Public Holiday. Do take note of this.</Text>
@@ -21,7 +23,7 @@ const MemoCard = () => {
                 <Components.Button onPress={() => setAskModalVisible(true)}
                     buttonContainerStyle={{ height: heightPercentageToDP(4) }} title="Acknowledge" />
             </TouchableOpacity>
-            <AskToAcknowlegedeModal modalVisible={askModalVisible} setModalVisible={setAskModalVisible} successModalVisible={successModalVisible}setSuccessModalVisible={setSuccessModalVisible} />
+            <AskToAcknowlegedeModal modalVisible={askModalVisible} setModalVisible={setAskModalVisible} successModalVisible={successModalVisible} setSuccessModalVisible={setSuccessModalVisible} />
             <AcknowlegedSuccessModal modalVisible={successModalVisible} setModalVisible={setSuccessModalVisible} />
 
         </>
