@@ -18,6 +18,7 @@ import close from './close'
 import success from './success'
 import valid from './valid'
 import invalid from './invalid'
+import evidence from './evidence'
 
 export const Images = {
     logo,
@@ -37,5 +38,6 @@ export const Images = {
     success,
     calender,
     invalid,
-    valid
+    valid,
+    evidence
 }

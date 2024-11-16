@@ -6,7 +6,7 @@ import { report_types } from '@/constants/user'
 import { Router, useRouter } from 'expo-router'
 
 const ReportCard = ({ data, type }: { data: any, type: string }) => {
-    
+
     const router: Router = useRouter()
 
     return (
@@ -31,7 +31,7 @@ const ReportCard = ({ data, type }: { data: any, type: string }) => {
                     <Text style={styles.value}>{data.Submitted}</Text>
                 </View>
             ) : (
-                <View style={{ gap: 5 }} >
+                <View style={{ gap: 5, marginTop: 5 }} >
                     <View style={{ flexDirection: 'row', gap: 5 }} >
                         <Text style={styles.key}>Issued</Text>
                         <Text style={styles.value}>{data?.Issued}</Text>
