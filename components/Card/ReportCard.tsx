@@ -3,10 +3,15 @@ import React from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Colors } from '@/constants/Colors'
 import { report_types } from '@/constants/user'
+import { Router, useRouter } from 'expo-router'
 
 const ReportCard = ({ data, type }: { data: any, type: string }) => {
+    
+    const router: Router = useRouter()
+
     return (
-        <TouchableOpacity style={styles.container} activeOpacity={0.7}>
+
+        <TouchableOpacity onPress={() => { data.navigate && router.push({ pathname: data.navigate }) }} style={styles.container} activeOpacity={0.7}>
             <Text style={styles.idText} >{data?.id}</Text>
             <View style={styles.tagContainer} >
                 {data?.tags.map((tag: { text: string, color: string }, index: number) => {

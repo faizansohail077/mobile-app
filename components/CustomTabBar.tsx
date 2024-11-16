@@ -21,7 +21,7 @@ interface CustomTabBarProps {
 export function CustomTabBar({ routes }: CustomTabBarProps) {
     const router = useRouter();
     const segments: string[] = useSegments();
-    const hideBottomTabBarRoutes = ['profile','editProfile','changePassword','notification'];
+    const hideBottomTabBarRoutes = ['approved','communicationRecord','completed', 'hseInspection','incidentReporting', 'profile','rejected','inReview','editProfile','changePassword','notification'];
     const [createReportModalVisible, setCreateReportModalVisible] = useState(false);
 
     const isRouteActive = (route: string) => {
@@ -45,7 +45,7 @@ export function CustomTabBar({ routes }: CustomTabBarProps) {
                         style={styles.tab}
                         activeOpacity={0.7}
                         onPress={() => {
-                            if (route.name === 'create-report') {
+                            if (route.name === 'createReport') {
                                 setCreateReportModalVisible(true); // Show modal when plus button is pressed
                             } else {
                                 router.push(route.name);

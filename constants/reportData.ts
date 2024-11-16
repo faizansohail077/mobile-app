@@ -9,20 +9,26 @@ export const report_list = [
                     { color: Colors.primary_blue, text: "Communication Record" },
                     { color: Colors.light_grey, text: "Tool box briefing" },
                 ],
-                Submitted: "4 Feb 22 at 14:05"
+                Submitted: "4 Feb 22 at 14:05",
+                navigate:"/communicationRecord"
+
             },
             {
                 id: "415929374-1234", tags: [
                     { color: Colors.dark_red, text: "Incident Reporting" },
                     { color: Colors.light_grey, text: "Near Miss" },
                 ],
-                Submitted: "4 Feb 22 at 14:05"
+                Submitted: "4 Feb 22 at 14:05",
+                navigate:"/incidentReporting"
+
             },
             {
                 id: "415929374-1234", tags: [
                     { color: Colors.dark_blue, text: "HSE Inspection" },
                 ],
-                Submitted: "4 Feb 22 at 14:05"
+                Submitted: "4 Feb 22 at 14:05",
+                navigate:"/hseInspection"
+
             },
             {
                 id: "415929374-1234", tags: [
@@ -54,6 +60,7 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/inReview"
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -63,6 +70,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/inReview"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -72,6 +81,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/inReview"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -81,6 +92,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/inReview"
+
             },
 
         ]
@@ -95,6 +108,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/approved"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -104,6 +119,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/approved"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -113,6 +130,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/approved"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -122,6 +141,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/approved"
+
             },
 
 
@@ -137,6 +158,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/rejected"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -146,6 +169,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/rejected"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -155,6 +180,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/rejected"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -164,6 +191,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/rejected"
+
             },
 
 
@@ -180,6 +209,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/completed"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -189,6 +220,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/completed"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -198,6 +231,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/completed"
+
             },
             {
                 id: "PTW 415929374-1234", tags: [
@@ -207,6 +242,8 @@ export const report_list = [
                 Issued: "4 Feb 22 at 14:05",
                 Expiry: "8 Feb 22 at 18:00",
                 Location: "Location of work",
+                navigate:"/completed"
+
             },
 
 

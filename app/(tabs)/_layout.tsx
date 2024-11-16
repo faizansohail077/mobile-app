@@ -12,7 +12,7 @@ const routes = [
     inactiveIcon: Images.inActiveHome,
   },
   {
-    name: 'create-report',
+    name: 'createReport',
     title: '',
     activeIcon: Images.activeHome,
     inactiveIcon: Images.inActiveHome,
