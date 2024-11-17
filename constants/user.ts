@@ -45,6 +45,21 @@ export const tab_list = [
             { id: 1, text: report_types["need-review"] },
             { id: 2, text: report_types["approved"] },
             { id: 3, text: report_types["rejected"] },
+        ]
+    },
+    {
+        role: user_role["Project-Manager"], tabs: [
+            { id: 0, text: report_types["reports"] },
+            { id: 1, text: report_types["need-review"] },
+            { id: 2, text: report_types["approved"] },
+        ]
+    },
+    {
+        role: user_role["Admin"], tabs: [
+            { id: 0, text: report_types["reports"] },
+            { id: 1, text: report_types["in-review"] },
+            { id: 2, text: report_types["approved"] },
+            { id: 3, text: report_types["rejected"] },
             { id: 4, text: report_types["completed"] },
         ]
     }

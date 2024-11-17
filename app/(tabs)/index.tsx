@@ -39,8 +39,8 @@ export default function HomeScreen() {
 
   useEffect(() => {
     if (user) {
-      const userTabs2 = tab_list.filter((item) => item.role === user.role)
-     
+      const userTabs2 = tab_list?.filter((item) => item.role === user.role)
+     console.log(userTabs2,'userTabs2')
       setUserTabs(userTabs2)
     }
   }, [user])
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   },
 
   tab: {
-    minWidth: widthPercentageToDP(25),
+    minWidth: widthPercentageToDP(30),
     paddingVertical: heightPercentageToDP(1.5),
     alignItems: 'center',
     justifyContent: 'center',

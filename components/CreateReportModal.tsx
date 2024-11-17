@@ -26,7 +26,22 @@ const permissions = [
             { text: "Incident Reporting", goTo: '/createIncidentReport' },
 
         ]
-    }
+    },
+    {
+        role: user_role["Project-Manager"], permission: [
+            { text: "Incident Reporting", goTo: '/createIncidentReport' },
+        ]
+    },
+    {
+        role: user_role["Admin"], permission: [
+            { text: "Communication Record", goTo: '/createCommunicationReport' },
+            { text: "Permit To Work", goTo: '/createPTW' },
+            { text: "Incident Reporting", goTo: '/createIncidentReport' },
+            { text: "HSE Inspection", goTo: '/createHSEInspection' },
+            { text: "Incident Reporting", goTo: '/createIncidentReport' },
+        ]
+    },
+
 ]
 
 const tabs = [
@@ -40,6 +55,18 @@ const tabs = [
         role: user_role["Safety-Assessor"], tabs: [
             { heading: "Frequently used", subTabs: ["Permit To Work", "HSE Inspection"] },
             { heading: "Others", subTabs: ["Incident Reporting", "MS, RA and SWP"] },
+        ]
+    },
+
+    {
+        role: user_role["Project-Manager"], tabs: [
+            { heading: "Others", subTabs: ["Incident Reporting"] },
+        ]
+    },
+    {
+        role: user_role["Admin"], tabs: [
+            { heading: "Frequently used", subTabs: ["Daily Checklist", "Permit To Work", "Communication Record","HSE Inspection"] },
+            { heading: "Others", subTabs: ["Monthly Checklist", "Incident Reporting", "MS, RA and SWP"] },
         ]
     },
 
