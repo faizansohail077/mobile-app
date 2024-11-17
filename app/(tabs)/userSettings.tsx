@@ -1,44 +1,38 @@
-import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Router, useRouter } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Components } from '@/components';
-import { getData } from '@/lib/helpers';
-import { user_role, users } from '@/constants/user';
+import { users } from '@/constants/user';
+import { ReportViewModal, AddUserModal } from '@/components/Modal';
 
 const UserSettings = () => {
     const router: Router = useRouter();
-    const [user, setUser] = useState<any>({})
-    const [loader, setLoader] = useState(true)
-    const [userList, setUserList] = useState(users)
+    const [userList, setUserList] = useState<any>(users)
 
+    const [openAddUserModal, setAddUserModal] = useState(false)
+    const [openSuccessModal, setSuccessModal] = useState(false)
 
-    const companyRelated = [
-        { text: "about us", goTo: "" },
-        { text: "terms & conditions", goTo: "" },
-        { text: "privacy policy", goTo: "" },
-        { text: "GIVE FEEDBACK", goTo: "" },
-    ]
+    const [email, setEmail] = useState('')
+    const [role, setRole] = useState('')
+    const [password, setPassword] = useState('')
 
-    useEffect(() => {
-        fetchUser()
-    }, [])
+    const userCreated = () => {
+        setUserList((prevUserList: any) => [
+            { email, password, role },
+            ...prevUserList,
+        ]);
 
-    const fetchUser = async () => {
-        try {
-            const result = await getData('user');
-            setUser(result)
-        } catch (error) {
-            console.log(error, 'error fetchUser')
-        } finally {
-            setLoader(false)
-        }
-    }
+        setEmail('');
+        setPassword('');
+        setRole('');
 
-    if (loader) return <Text>Loading...</Text>
+        setSuccessModal(false);
+
+    };
+
 
     return (
         <>
@@ -50,15 +44,15 @@ const UserSettings = () => {
                 </View>
             </View>
 
-            <ScrollView style={{ height: heightPercentageToDP(80), paddingTop: heightPercentageToDP(2) }} >
+            <ScrollView showsVerticalScrollIndicator={false} style={{ height: heightPercentageToDP(80), paddingTop: heightPercentageToDP(2) }} >
                 <View >
                     <View style={styles.flexContainer} >
                         <Text style={styles.headerText}>Users</Text>
                     </View>
 
-                    {userList?.map((item) => {
+                    {userList?.map((item: any, index: number) => {
                         return (
-                            <View style={[styles.navigationTopContainer,{gap:10}]}>
+                            <View key={index} style={[styles.navigationTopContainer, { gap: 10 }]}>
                                 <View style={{ flexDirection: 'row', gap: 5 }} >
                                     <Text style={styles.key}>Email: </Text>
                                     <Text style={styles.value}>{item.email}</Text>
@@ -74,15 +68,14 @@ const UserSettings = () => {
 
 
                 </View>
-
-
-
             </ScrollView>
 
             <View style={styles.navigationTopContainer}>
-
-                <Components.Button title="Add User" onPress={() => router.push({ 'pathname': '/login' })} />
+                <Components.Button title="Add User" onPress={() => setAddUserModal(true)} />
             </View>
+
+            <AddUserModal email={email} setEmail={setEmail} password={password} setPassword={setPassword} role={role} setRole={setRole} modalVisible={openAddUserModal} setModalVisible={setAddUserModal} successModalVisible={openSuccessModal} setSuccessModalVisible={setSuccessModal} />
+            <ReportViewModal modalVisible={openSuccessModal} setModalVisible={setSuccessModal} title='User Has Been Created' subTitle='Go back home to view all other PTWs that are pending action.' buttonTitle={`go back to profile`.toUpperCase()} cta={() => userCreated()} />
         </>
     )
 }

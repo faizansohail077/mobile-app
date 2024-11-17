@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Router, useRouter } from 'expo-router';
 import Modal from "react-native-modal";
 import AppVersion from '@/components/Version';
-import { users } from '@/constants/user';
+import { user_role, users } from '@/constants/user';
 import { addData } from '@/lib/helpers';
 
 export default function HomeScreen() {
@@ -24,8 +24,12 @@ export default function HomeScreen() {
     if (!findEmail) {
       setModalVisible(true)
     } else {
-      router.replace('/(tabs)')
       addData('user', findEmail)
+      if (findEmail.role === user_role["Admin"]) {
+        router.replace({ pathname: "/adminHome" })
+      } else {
+        router.replace({ pathname: "/(tabs)" })
+      }
     }
   }
 
