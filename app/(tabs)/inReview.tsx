@@ -10,6 +10,7 @@ import { getData } from '@/lib/helpers';
 import { Components } from '@/components';
 import { user_role } from '@/constants/user';
 import { ReportViewModal } from '@/components/Modal';
+import TypingModal from '@/components/Modal/typingModal';
 
 const InReview = () => {
   const router: Router = useRouter();
@@ -19,6 +20,14 @@ const InReview = () => {
 
   const [approveModal, setApproveModal] = useState(false)
   const [confirmApproveModal, setConfirmApproveModal] = useState(false)
+
+  const [rejectModal, setRejectModal] = useState(false)
+  const [confirmRejectModal, setConfirmRejectModal] = useState(false)
+
+  const rejected = () => {
+    setRejectModal(false)
+    router.push({ 'pathname': '/(tabs)/' })
+  }
 
   const approved = () => {
     setApproveModal(false)
@@ -160,7 +169,7 @@ const InReview = () => {
 
 
               {user.role === user_role["Safety-Assessor"] && <View style={{ flexDirection: 'row', gap: 5, marginTop: heightPercentageToDP(3) }} >
-                <Components.Button buttonContainerStyle={{ width: "50%", backgroundColor: Colors.red }} backgroundColor={Colors.dark_red} title='REJECT' />
+                <Components.Button buttonContainerStyle={{ width: "50%", backgroundColor: Colors.red }} onPress={() => setConfirmRejectModal(true)} backgroundColor={Colors.dark_red} title='REJECT' />
                 <Components.Button buttonContainerStyle={{ width: "50%", backgroundColor: Colors.red }} onPress={() => setConfirmApproveModal(true)} backgroundColor={Colors.green} title='APPROVED' />
               </View>}
             </View>
@@ -170,6 +179,9 @@ const InReview = () => {
         <View style={{ paddingTop: heightPercentageToDP(2) }} />
         <ReportViewModal Image={Images.error()} modalVisible={confirmApproveModal} setModalVisible={setConfirmApproveModal} title='Proceed to approve this PTW?' subTitle='This action is irreversible. Please confirm before proceeding.' buttonTitle={`proceed to approve`.toUpperCase()} cta={() => confirmApprove()} />
         <ReportViewModal modalVisible={approveModal} setModalVisible={setApproveModal} title='This PTW has been approved' subTitle='Go back home to view all other PTWs that are pending action.' buttonTitle={`go back home`.toUpperCase()} cta={() => approved()} />
+
+        <TypingModal modalVisible={confirmRejectModal} setModalVisible={setConfirmRejectModal} successModalVisible={rejectModal} setSuccessModalVisible={setRejectModal} />
+        <ReportViewModal modalVisible={rejectModal} setModalVisible={setRejectModal} title='This PTW has been rejected' subTitle='Go back home to view all other PTWs that are pending action.' buttonTitle={`go back home`.toUpperCase()} cta={() => rejected()} />
       </ScrollView>
     </>
   )
