@@ -21,7 +21,7 @@ export default function ReportViewModal({ Image, title, subTitle, cta, buttonTit
                 <View style={{ alignItems: 'center', zIndex: 1 }} >
                     <SvgXml style={{ marginBottom: -40 }} xml={Image ? Image : Images.success()} />
                 </View>
-                <View style={modalstyles.modalView} >
+                <View style={[modalstyles.modalView,{height:!subTitle ? heightPercentageToDP(30):heightPercentageToDP(40)}]} >
                     <View style={{ flexDirection: 'column', height: "60%", justifyContent: 'space-between', width: '100%' }} >
 
                         <Text style={{ color: "rgba(18, 18, 18, 1)", fontWeight: 'bold', fontSize: widthPercentageToDP(6), textAlign: 'center' }} >{title}</Text>

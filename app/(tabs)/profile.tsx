@@ -1,4 +1,4 @@
-import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Router, useRouter } from 'expo-router'
@@ -8,11 +8,21 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Components } from '@/components';
 import { getData } from '@/lib/helpers';
 import { user_role } from '@/constants/user';
+import { ReportViewModal, TypingModal } from '@/components/Modal';
 
 const Profile = () => {
     const router: Router = useRouter();
     const [user, setUser] = useState<any>({})
     const [loader, setLoader] = useState(true)
+    const [feedBackModal, setFeedBackModal] = useState(false)
+    const [feedBackSuccessModal, setFeedBackSuccessModal] = useState(false)
+
+
+    const rejected = () => {
+        setFeedBackSuccessModal(false)
+    }
+
+
     const companyRelated = [
         { text: "about us", goTo: "" },
         { text: "terms & conditions", goTo: "" },
@@ -115,9 +125,9 @@ const Profile = () => {
 
                     {companyRelated?.map((item, index) => {
                         return (
-                            <TouchableOpacity key={index} activeOpacity={0.7} style={styles.navigationContainer} >
+                            <TouchableOpacity onPress={() => index === 3 && setFeedBackModal(true)} key={index} activeOpacity={0.7} style={styles.navigationContainer} >
                                 <Text style={{ color: Colors.primary_blue }}>{item?.text.toUpperCase()}</Text>
-                                <AntDesign onPress={() => router.push({ 'pathname': '/(tabs)/' })} name="right" size={16} color={Colors.primary_blue} />
+                                <AntDesign name="right" size={16} color={Colors.primary_blue} />
                             </TouchableOpacity>
                         )
                     })}
@@ -128,6 +138,9 @@ const Profile = () => {
                 </View>
 
             </ScrollView>
+
+            <TypingModal showSubTitle={false} inputTitle={"Description"} title='Give Feedback' modalVisible={feedBackModal} setModalVisible={setFeedBackModal} successModalVisible={feedBackSuccessModal} setSuccessModalVisible={setFeedBackSuccessModal} />
+            <ReportViewModal modalVisible={feedBackSuccessModal} setModalVisible={setFeedBackSuccessModal} title='Your Feedback has been Submitted' subTitle='' buttonTitle={`close`.toUpperCase()} cta={() => rejected()} />
         </>
     )
 }

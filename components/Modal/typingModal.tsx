@@ -7,7 +7,7 @@ import { Components } from "@/components";
 import { useState } from "react";
 
 
-export default function TypingModal({ setSuccessModalVisible, modalVisible, setModalVisible, successModalVisible }: { successModalVisible: boolean, setSuccessModalVisible: any, modalVisible: boolean, setModalVisible: any }) {
+export default function TypingModal({ showSubTitle = true, title, inputTitle, setSuccessModalVisible, modalVisible, setModalVisible, successModalVisible }: { inputTitle?: string, showSubTitle?: boolean, title?: string, successModalVisible: boolean, setSuccessModalVisible: any, modalVisible: boolean, setModalVisible: any }) {
     const [desc, setDesc] = useState('')
     const submit = async () => {
         setModalVisible(!modalVisible)
@@ -26,22 +26,23 @@ export default function TypingModal({ setSuccessModalVisible, modalVisible, setM
         >
             <View style={modalstyles.centeredView}>
 
-                <View style={modalstyles.modalView} >
-                   
+                <View style={[modalstyles.modalView,{height:!showSubTitle ? heightPercentageToDP(30):heightPercentageToDP(40)}]} >
+
                     <View style={modalstyles.topContainer} >
                         <Text />
-                        <Text style={{ fontWeight: 'bold', fontSize: widthPercentageToDP(5) }} >Reject PTW</Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: widthPercentageToDP(5) }} >{title ? title : 'Reject PTW'}</Text>
                         <TouchableOpacity activeOpacity={0.7} onPress={() => setModalVisible(!modalVisible)} >
                             <SvgXml xml={Images.close()} />
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{ width: '100%' }} >
+                    {showSubTitle && <View style={{ width: '100%' }} >
                         <Text>Fill in the reason for rejection below before proceeding to submit.</Text>
                     </View>
+                    }
 
                     <View style={{ width: '100%' }} >
-                        <Components.Input value={desc} setValue={setDesc} placeholder="Enter reason for rejection here" title="Reason for rejection" inputTitleStyles={{ fontSize: widthPercentageToDP(3) }} />
+                        <Components.Input value={desc} setValue={setDesc} placeholder="Enter reason for rejection here" title={inputTitle ? inputTitle : "Reason for rejection"} inputTitleStyles={{ fontSize: widthPercentageToDP(3) }} />
                     </View>
 
                     <View style={{ width: '100%' }} >
@@ -70,8 +71,8 @@ const modalstyles = StyleSheet.create({
         elevation: 5,
         // justifyContent: 'center',
         paddingHorizontal: widthPercentageToDP(5),
-       paddingTop: heightPercentageToDP(5),
-       gap:20
+        paddingTop: heightPercentageToDP(5),
+        gap: 20
     },
 
     topContainer: {

@@ -48,7 +48,7 @@ export default function AddUserModal({ email, setEmail, password, setPassword, r
                         <Components.Input value={password} setValue={setPassword} placeholder="Enter password for user here" title="Password" inputTitleStyles={{ fontSize: widthPercentageToDP(3) }} />
 
                         <Components.Select
-                            title="Select an Option"
+                            title="Select an Role"
                             options={options}
                             selectedValue={role}
                             setSelectedValue={setRole}
@@ -82,7 +82,7 @@ const modalstyles = StyleSheet.create({
         elevation: 5,
         // justifyContent: 'center',
         paddingHorizontal: widthPercentageToDP(5),
-        paddingTop: heightPercentageToDP(5),
+        paddingTop: heightPercentageToDP(2),
         gap: 20
     },
 
