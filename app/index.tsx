@@ -24,7 +24,7 @@ export default function HomeScreen() {
     const fetchUser = async () => {
         try {
             const result: any = await getData('user');
-            if (result) {
+            if (result?.length) {
                 if (result.role === user_role["Admin"]) {
                     router.replace({ pathname: "/adminHome" })
                 } else {
