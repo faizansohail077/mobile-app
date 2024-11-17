@@ -6,7 +6,7 @@ import { Images } from "@/assets/images";
 import { Components } from "@/components";
 
 
-export default function ReportViewModal({ title, subTitle, cta, buttonTitle, modalVisible, setModalVisible }: { title: string, subTitle?: string, cta: () => void, buttonTitle: string, modalVisible: boolean, setModalVisible: any }) {
+export default function ReportViewModal({ Image, title, subTitle, cta, buttonTitle, modalVisible, setModalVisible }: { Image?: any, title: string, subTitle?: string, cta: () => void, buttonTitle: string, modalVisible: boolean, setModalVisible: any }) {
 
 
     return (
@@ -19,7 +19,7 @@ export default function ReportViewModal({ title, subTitle, cta, buttonTitle, mod
         >
             <View style={modalstyles.centeredView}>
                 <View style={{ alignItems: 'center', zIndex: 1 }} >
-                    <SvgXml style={{ marginBottom: -40 }} xml={Images.success()} />
+                    <SvgXml style={{ marginBottom: -40 }} xml={Image ? Image : Images.success()} />
                 </View>
                 <View style={modalstyles.modalView} >
                     <View style={{ flexDirection: 'column', height: "60%", justifyContent: 'space-between', width: '100%' }} >

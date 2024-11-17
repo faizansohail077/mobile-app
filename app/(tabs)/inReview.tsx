@@ -1,15 +1,53 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Router, useRouter } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
-import { Image, SvgXml } from 'react-native-svg';
+import { SvgXml } from 'react-native-svg';
 import { Images } from '@/assets/images';
+import { getData } from '@/lib/helpers';
+import { Components } from '@/components';
+import { user_role } from '@/constants/user';
+import { ReportViewModal } from '@/components/Modal';
 
 const InReview = () => {
   const router: Router = useRouter();
   const tags = [{ text: "In Review", color: Colors.orange }, { text: "Hot Work", color: Colors.purple }]
+  const [user, setUser] = useState<any>({})
+  const [loader, setLoader] = useState(true)
+
+  const [approveModal, setApproveModal] = useState(false)
+  const [confirmApproveModal, setConfirmApproveModal] = useState(false)
+
+  const approved = () => {
+    setApproveModal(false)
+    router.push({ 'pathname': '/(tabs)/' })
+  }
+
+  const confirmApprove = () => {
+    setConfirmApproveModal(false)
+    setTimeout(() => {
+      setApproveModal(true)
+    }, 500)
+
+  }
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
+  const fetchUser = async () => {
+    try {
+      const result = await getData('user');
+      setUser(result)
+    } catch (error) {
+      console.log(error, 'error fetchUser')
+    } finally {
+      setLoader(false)
+    }
+  }
+
+  if (loader) return <Text>Loading...</Text>
 
   return (
     <>
@@ -119,12 +157,19 @@ const InReview = () => {
                 <Text style={styles.keyText}>Issued: </Text>
                 <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
               </View>
+
+
+              {user.role === user_role["Safety-Assessor"] && <View style={{ flexDirection: 'row', gap: 5, marginTop: heightPercentageToDP(3) }} >
+                <Components.Button buttonContainerStyle={{ width: "50%", backgroundColor: Colors.red }} backgroundColor={Colors.dark_red} title='REJECT' />
+                <Components.Button buttonContainerStyle={{ width: "50%", backgroundColor: Colors.red }} onPress={() => setConfirmApproveModal(true)} backgroundColor={Colors.green} title='APPROVED' />
+              </View>}
             </View>
           </View>
         </View>
 
-        <View style={{ paddingTop: heightPercentageToDP(2)}} />
-
+        <View style={{ paddingTop: heightPercentageToDP(2) }} />
+        <ReportViewModal Image={Images.error()} modalVisible={confirmApproveModal} setModalVisible={setConfirmApproveModal} title='Proceed to approve this PTW?' subTitle='This action is irreversible. Please confirm before proceeding.' buttonTitle={`proceed to approve`.toUpperCase()} cta={() => confirmApprove()} />
+        <ReportViewModal modalVisible={approveModal} setModalVisible={setApproveModal} title='This PTW has been approved' subTitle='Go back home to view all other PTWs that are pending action.' buttonTitle={`go back home`.toUpperCase()} cta={() => approved()} />
       </ScrollView>
     </>
   )
