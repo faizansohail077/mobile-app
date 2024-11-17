@@ -147,7 +147,7 @@ export default function CreateReportModalComponent({ modalVisible, setModalVisib
         >
             <View style={modalstyles.centeredView}>
 
-                <View style={modalstyles.modalView} >
+                <View style={[modalstyles.modalView,{height:user.role === user_role["Project-Manager"] ? heightPercentageToDP(30):heightPercentageToDP(60) }]} >
 
                     <View style={modalstyles.topContainer} >
                         <Text />

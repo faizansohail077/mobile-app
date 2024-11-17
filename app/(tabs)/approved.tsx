@@ -191,12 +191,12 @@ const Approved = () => {
                 <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
               </View>
               <SvgXml xml={Images.sign()} />
-              {user.role != user_role["Safety-Assessor"] && < Components.Button onPress={() => setSuccessModalVisible(true)} backgroundColor={Colors.green} buttonContainerStyle={{ marginTop: 10 }} title={`mark as completed`.toUpperCase()} />}
+              {(user?.role != user_role["Safety-Assessor"] && user?.role != user_role["Project-Manager"]) && < Components.Button onPress={() => setSuccessModalVisible(true)} backgroundColor={Colors.green} buttonContainerStyle={{ marginTop: 10 }} title={`mark as completed`.toUpperCase()} />}
             </View>
           </View>
         </View>
 
-        {user?.role === user_role["Safety-Assessor"] && <View style={styles.navigationTopContainer}>
+        {(user?.role === user_role["Safety-Assessor"] || user?.role === user_role["Project-Manager"]) && <View style={styles.navigationTopContainer}>
           <View style={{ gap: 10 }} >
             <Text style={styles.headerText}>Closing Supervisor</Text>
             <View>
