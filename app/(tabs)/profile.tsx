@@ -1,20 +1,42 @@
 import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen'
 import { Router, useRouter } from 'expo-router'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Components } from '@/components';
+import { getData } from '@/lib/helpers';
+import { user_role } from '@/constants/user';
 
 const Profile = () => {
     const router: Router = useRouter();
+    const [user, setUser] = useState<any>({})
+    const [loader, setLoader] = useState(true)
     const companyRelated = [
         { text: "about us", goTo: "" },
         { text: "terms & conditions", goTo: "" },
         { text: "privacy policy", goTo: "" },
         { text: "GIVE FEEDBACK", goTo: "" },
     ]
+
+    useEffect(() => {
+        fetchUser()
+    }, [])
+
+    const fetchUser = async () => {
+        try {
+            const result = await getData('user');
+            setUser(result)
+        } catch (error) {
+            console.log(error, 'error fetchUser')
+        } finally {
+            setLoader(false)
+        }
+    }
+
+    if (loader) return <Text>Loading...</Text>
+
     return (
         <>
             <View style={styles.topContainer} >
@@ -67,11 +89,23 @@ const Profile = () => {
                         <Text style={styles.headerText}>Account Related</Text>
                     </View>
 
-                    <TouchableOpacity onPress={() => router.push({ 'pathname': '/(tabs)/changePassword' })}  activeOpacity={0.7} style={styles.navigationContainer} >
+                    <TouchableOpacity onPress={() => router.push({ 'pathname': '/(tabs)/changePassword' })} activeOpacity={0.7} style={styles.navigationContainer} >
                         <Text style={{ color: Colors.primary_blue }}>{`Change Password`.toUpperCase()}</Text>
                         <AntDesign name="right" size={16} color={Colors.primary_blue} />
                     </TouchableOpacity>
                 </View>
+
+                {user.role === user_role["Admin"] && <View style={styles.navigationTopContainer}>
+                    <View style={styles.flexContainer} >
+                        <Text style={styles.headerText}>User Related</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={() => router.push({ 'pathname': '/(tabs)/userSettings' })} activeOpacity={0.7} style={styles.navigationContainer} >
+                        <Text style={{ color: Colors.primary_blue }}>{`User Settings`.toUpperCase()}</Text>
+                        <AntDesign name="right" size={16} color={Colors.primary_blue} />
+                    </TouchableOpacity>
+                </View>
+                }
 
                 <View style={styles.navigationTopContainer}>
 
