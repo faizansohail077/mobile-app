@@ -1,17 +1,45 @@
 import { heightPercentageToDP, widthPercentageToDP } from "react-native-responsive-screen";
 import Modal from "react-native-modal";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SvgXml } from "react-native-svg";
 import { Images } from "@/assets/images";
 import { Components } from ".";
 import Checkbox from 'expo-checkbox';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getData } from "@/lib/helpers";
+import { user_role } from "@/constants/user";
 
-const options = ["Working at Height", "Confined Space", "Excavation", "Hot Work"];
+const options = [
+    {
+        heading: "Type of permit",
+        tabs: ["Working at Height", "Confined Space", "Excavation", "Hot Work"]
 
+    }
+
+];
+
+const adminOptions = [
+    {
+        heading: "Type of report",
+        tabs: ["Daily Checklist", "Communication Record", "HSE Inspection", "Monthly Checklist", "Incident Reporting", "MS, RA and SWP"]
+
+    },
+    {
+        heading: "Communication Record",
+        tabs: ["Tool box briefing", "Safety Time Out Record", "Training Record", "Mass Tool Box Briefing"]
+    },
+    {
+        heading: "Incident Type",
+        tabs: ["Near Miss", "Dangerous Occurance", "Unsafe Act", "Unsafe Condition", "Incident Report", "Safety Lapse"]
+    },
+
+]
 
 export default function FilterModalComponent({ modalVisible, setModalVisible }: { modalVisible: boolean, setModalVisible: any }) {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+    const [filterList, selectedFilterList] = useState<any>([]);
+    const [user, setUser] = useState<any>({})
+    const [loader, setLoader] = useState(true)
 
     const handleSelect = (option: string) => {
         if (selectedOptions.includes(option)) {
@@ -20,6 +48,38 @@ export default function FilterModalComponent({ modalVisible, setModalVisible }: 
             setSelectedOptions(prev => [...prev, option]);
         }
     };
+
+    useEffect(() => {
+        if (user) {
+            if (user.role === user_role["Admin"]) {
+                selectedFilterList(adminOptions)
+            } else {
+                selectedFilterList(options)
+            }
+        }
+    }, [user])
+
+    useEffect(() => {
+        fetchUser()
+    }, [])
+
+    const fetchUser = async () => {
+        try {
+            const result = await getData('user');
+            setUser(result)
+        } catch (error) {
+            console.log(error, 'error fetchUser')
+        } finally {
+            setLoader(false)
+        }
+    }
+
+    if (loader) return <Text>Loading...</Text>
+
+
+
+
+
     return (
         <Modal
             hasBackdrop={true}
@@ -39,25 +99,34 @@ export default function FilterModalComponent({ modalVisible, setModalVisible }: 
                             <SvgXml xml={Images.close()} />
                         </TouchableOpacity>
                     </View>
+                    <ScrollView style={{ flex: 1, width: '100%', marginTop: 20 }} showsVerticalScrollIndicator={false} >
 
-                    <View style={{ width: '100%', gap: 20 }} >
-                        <Text style={{ fontWeight: 'bold', fontSize: widthPercentageToDP(5) }} >Type of permit</Text>
-                        {options.map((option, index) => (
-                            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }} >
+                        <View style={{ width: '100%', gap: 20 }} >
+                            {filterList.map((optiontab:any, index:any) => (
+                                <View key={index} style={{ gap: 20 }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: widthPercentageToDP(5) }} >{optiontab.heading}</Text>
+                                    {optiontab.tabs.map((option:any, index:any) => {
+                                        return (
+                                            < View key={index} style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }} >
 
-                                <Checkbox
-                                    value={selectedOptions.includes(option)} // Check if this option is selected
-                                    onValueChange={() => handleSelect(option)}
-                                />
-                                <TouchableOpacity onPress={() => handleSelect(option)}>
-                                    <Text style={{ fontSize: widthPercentageToDP(4) }}>{option}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        ))}
+                                                <Checkbox
+                                                    value={selectedOptions.includes(option)} // Check if this option is selected
+                                                    onValueChange={() => handleSelect(option)}
+                                                />
+                                                <TouchableOpacity onPress={() => handleSelect(option)}>
+                                                    <Text style={{ fontSize: widthPercentageToDP(4) }}>{option}</Text>
+                                                </TouchableOpacity>
+                                            </View >
+                                        )
+                                    })}
+                                </View>
+                            ))}
 
-                    </View>
+                        </View>
 
 
+
+                    </ScrollView>
                     <View style={modalstyles.bottomContainer} >
                         <Components.Button title='Apply Filter' onPress={() => setModalVisible(!modalVisible)} />
                         <TouchableOpacity activeOpacity={0.7} >
@@ -67,7 +136,7 @@ export default function FilterModalComponent({ modalVisible, setModalVisible }: 
 
                 </View>
             </View>
-        </Modal>
+        </Modal >
     )
 }
 
@@ -102,6 +171,6 @@ const modalstyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
     },
-    bottomContainer: { flexDirection: 'column', gap: 10, justifyContent: 'space-between', width: '100%' },
+    bottomContainer: { marginTop: 20, flexDirection: 'column', gap: 10, justifyContent: 'space-between', width: '100%' },
     bottomContainerText: { color: 'rgba(0, 0, 0, 0.38)', textAlign: 'center', fontSize: widthPercentageToDP(4) }
 });
