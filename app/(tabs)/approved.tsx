@@ -191,7 +191,7 @@ const Approved = () => {
                 <Text style={styles.valueText}>4 Feb 22 at 14:05</Text>
               </View>
               <SvgXml xml={Images.sign()} />
-              {(user?.role != user_role["Safety-Assessor"] && user?.role != user_role["Project-Manager"]) && < Components.Button onPress={() => setSuccessModalVisible(true)} backgroundColor={Colors.green} buttonContainerStyle={{ marginTop: 10 }} title={`mark as completed`.toUpperCase()} />}
+              {(user?.role != user_role["Safety-Assessor"] && user?.role != user_role["Project-Manager"]&&user?.role != user_role["Admin"]) && < Components.Button onPress={() => setSuccessModalVisible(true)} backgroundColor={Colors.green} buttonContainerStyle={{ marginTop: 10 }} title={`mark as completed`.toUpperCase()} />}
             </View>
           </View>
         </View>

@@ -169,7 +169,7 @@ const Rejected = () => {
                 <Text style={[styles.valueText, { lineHeight: heightPercentageToDP(2.5) }]}>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</Text>
               </View>
             </View>
-            {user.role != user_role["Safety-Assessor"] && <Components.Button onPress={() => router.push({ pathname: '/createPTW', params: { title: "Edit", isRejected: 'yes' } })} buttonContainerStyle={{ marginTop: 10 }} title={`resubmit`.toUpperCase()} />}
+            {(user.role != user_role["Safety-Assessor"] && user.role != user_role["Admin"] ) && <Components.Button onPress={() => router.push({ pathname: '/createPTW', params: { title: "Edit", isRejected: 'yes' } })} buttonContainerStyle={{ marginTop: 10 }} title={`resubmit`.toUpperCase()} />}
           </View>
         </View>
 

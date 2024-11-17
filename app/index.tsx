@@ -8,6 +8,7 @@ import AppVersion from '@/components/Version';
 
 import { LogBox } from 'react-native';
 import { getData } from '@/lib/helpers';
+import { user_role } from '@/constants/user';
 LogBox.ignoreLogs(['Warning: ...']);
 LogBox.ignoreAllLogs();
 
@@ -22,15 +23,19 @@ export default function HomeScreen() {
 
     const fetchUser = async () => {
         try {
-            const result = await getData('user');
+            const result: any = await getData('user');
             if (result) {
-                router.replace({ pathname: "/(tabs)" })
+                if (result.role === user_role["Admin"]) {
+                    router.replace({ pathname: "/adminHome" })
+                } else {
+                    router.replace({ pathname: "/(tabs)" })
+                }
             } else {
                 router.replace({ pathname: "/login" })
             }
         } catch (error) {
             console.log(error, 'error fetchUser')
-        } 
+        }
     }
 
     return (
